@@ -29,10 +29,10 @@ HOI accounts for **39.8%** of the total duration.
 | Human motion | Standardized 55-joint BVH |
 | Performer IDs | 132 |
 | Semantics | 22 Frames, 214 Frame-LU labels |
-| Performer coverage | Median 23.5 performers per Frame-LU; 154 labels with at least 10 performers |
+| Performer coverage | Median 24 performers per Frame-LU; 154 labels with at least 10 performers |
 | HOI assets | Package-local object trajectories plus shared simplified OBJ meshes |
 
-The top 10, top 20, and top 50 Frame-LUs account for **19.2%**, **30.7%**,
+The top 10, top 20, and top 50 Frame-LUs account for **20.4%**, **31.8%**,
 and **53.7%** of the total duration.
 
 ## Intended Uses

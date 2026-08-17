@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HiPHI is a 617.5-hour optical MoCap benchmark for high-precision human motion and object-interaction.">
+  <meta name="description" content="HiPHI is a 617.5-hour high-fidelity optical MoCap dataset and benchmark that expands motion-space coverage and powers real-world humanoid learning.">
   <title>HiPHI: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="static/css/hiphi.css">
@@ -17,9 +17,9 @@
       <div class="nav-links" data-nav-links>
         <a href="#overview">Overview</a>
         <a href="#motion-atlas">Motion Atlas</a>
-        <a href="#frame-lu">Frame-LU</a>
+        <a href="#frame-lu">Frame–LU</a>
         <a href="#object-interaction">Object Interaction</a>
-        <a href="#g1">G1 Retargeting</a>
+        <a href="#g1">Humanoid Learning</a>
         <a href="#benchmark">Benchmark</a>
         <a href="#release">Release</a>
       </div>
@@ -35,7 +35,12 @@
           <div class="hero-copy">
             <h1 class="hero-wordmark" aria-label="HiPHI"><span class="wordmark-hi">Hi</span><span class="wordmark-phi">PHI</span></h1>
             <h2 class="title-lines"><span>A Large-Scale Benchmark</span><span>for High-Precision Human Motion</span><span>and Object-Interaction</span></h2>
-            <p class="hero-lede">High-precision optical MoCap, synchronized object-interaction, and Frame-LU motion units for humanoid learning.</p>
+            <p class="hero-lede">617.5 hours of high-fidelity whole-body motion and physically grounded interaction—built to scale humanoid learning.</p>
+            <div class="paper-byline" aria-label="Paper authors and affiliations">
+              <p class="author-list">Jiahao Ji<sup>1,2,*</sup>, Ji Ma<sup>1,5,*</sup>, Runhan Zhang<sup>1,3,*</sup>, Runyi Yu<sup>1,4</sup>, Wenjia Wang<sup>1,5</sup>, Weiheng Chi<sup>1</sup>, Qianqian Peng<sup>1</sup>, Weichao Yan<sup>1</sup>, Yongfei Gu<sup>1</sup>, Ye Tian<sup>1</sup>, Ting Wu<sup>1</sup>, Longwei Li<sup>1</sup>, Chun Yuan<sup>3</sup>, Ruoli Dai<sup>1,†</sup>, Lei Han<sup>1,†</sup></p>
+              <p class="affiliation-list"><span><sup>1</sup>Noitom Robotics</span><span><sup>2</sup>National University of Singapore</span><span><sup>3</sup>SIGS, Tsinghua University</span><span><sup>4</sup>The Hong Kong University of Science and Technology</span><span><sup>5</sup>The University of Hong Kong</span></p>
+              <p class="author-notes"><span><sup>*</sup>Equal contribution</span><span><sup>†</sup>Corresponding authors</span></p>
+            </div>
             <nav class="hero-actions project-links" aria-label="Project resources">
               <a class="btn primary" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">GitHub</a>
               <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">arXiv</a>
@@ -51,18 +56,20 @@
     <section id="overview" class="section-pad content-grid overview-grid site-section">
       <div class="overview-copy">
         <p class="eyebrow">Overview</p>
-        <h2>From FrameNet-guided motion units to humanoid-ready MoCap.</h2>
-        <p class="section-lede">HiPHI treats data collection as coverage-guided motion-space design: lexical FrameNet seeds become concrete, repeatable, high-precision optical MoCap sequences with object state when the motion requires it.</p>
+        <h2>The motion data foundation for physically grounded humanoid intelligence.</h2>
+        <p class="section-lede">HiPHI turns motion capture into motion-space design. FrameNet-guided motion seeds systematically expand across direction, speed, amplitude, posture, body-part involvement, and object/contact conditions—creating broad, repeatable coverage at unprecedented scale.</p>
         <div class="metric-chips overview-facts" aria-label="Dataset facts">
-          <span><b data-stat-key="totalDurationHours" data-stat-format="hours">617.5 h</b> total release duration</span>
+          <span><b data-stat-key="totalDurationHours" data-stat-format="hours">617.5 h</b> released motion</span>
+          <span><b data-stat-key="originalDurationHours" data-stat-format="hours">308.7 h</b> original capture</span>
           <span><b data-stat-key="totalFramesMillions" data-stat-format="millions">200.1M</b> frames</span>
           <span><b data-stat-key="captureFrameRateHz" data-stat-format="hz">90 Hz</b> optical MoCap</span>
-          <span><b data-stat-key="performers">102</b> performers</span>
+          <span><b data-stat-key="performers">132</b> performers</span>
+          <span><b>Sub-mm</b> marker tracking accuracy</span>
         </div>
         <div class="overview-cards">
-          <article class="card"><h3>Coverage-guided motion design</h3><p>FrameNet frames and lexical units become Frame-LU motion seeds, expanded into performer-facing capture instructions.</p></article>
-          <article class="card"><h3>Object-grounded interaction</h3><p>Object state is part of the motion record: synchronized human BVH, object trajectories, and object meshes.</p></article>
-          <article class="card"><h3>Humanoid-ready benchmark</h3><p>Includes motion-space analysis, quality metrics, G1 retargeted references, and humanoid tracking evaluation.</p></article>
+          <article class="card"><h3>Systematic motion-space expansion</h3><p>FrameNet frames and lexical units become scalable Frame–LU motion seeds instead of one-off scripts.</p></article>
+          <article class="card"><h3>Mesh-level interaction grounding</h3><p>Synchronized human motion, object trajectories, and object meshes preserve the full physical interaction.</p></article>
+          <article class="card"><h3>Executable humanoid benchmark</h3><p>Coverage, quality, tracking, scaling, and real-world G1 deployment connect data directly to humanoid learning.</p></article>
         </div>
       </div>
       <div id="overview-video" class="video-frame overview-video cardless">
@@ -76,14 +83,14 @@
       <div class="wide-grid section-heading atlas-heading">
         <div>
           <p class="eyebrow">Motion Atlas</p>
-          <h2>Interactive t-SNE Motion Atlas</h2>
-          <p>Explore the shared kinematic embedding used to compare HiPHI against representative motion datasets. Click sampled points to preview representative skeleton motions.</p>
+          <h2>The broadest kinematic motion space in the benchmark.</h2>
+          <p>Explore the dataset-balanced shared embedding used to compare representative motion datasets under one unified kinematic protocol. HiPHI reaches more regions and distributes motion more broadly across them.</p>
         </div>
         <div class="metric-chips atlas-metrics">
           <span><b data-stat-key="occupiedCells">1620</b> occupied cells</span>
           <span><b data-stat-key="effectiveOccupancy">1443</b> effective occupancy</span>
-          <span><b data-stat-key="longTailSharePercent" data-stat-format="percent">14.1%</b> long-tail share</span>
-          <span><b data-stat-key="closestBaselineLongTailSharePercent" data-stat-format="percent">10.7%</b> closest baseline long-tail share</span>
+          <span><b data-stat-key="longTailSharePercent" data-stat-format="percent">14.1%</b> rare-cell long-tail share</span>
+          <span><b data-stat-key="closestBaselineLongTailSharePercent" data-stat-format="percent">10.7%</b> BONES-SEED rare-cell share</span>
         </div>
       </div>
       <div class="atlas-frame-wrap wide-grid card">
@@ -96,14 +103,14 @@
       <div class="atlas-artifacts wide-grid">
         <figure class="card tsne-envelope" data-tsne-envelope>
           <div class="envelope-head">
-            <div><strong>Overlay occupancy envelope</strong><span>Paper-aligned 55×55 grid · default comparison: HiPHI + BONES-SEED</span></div>
+            <div><strong>Motion-space support envelope</strong><span>Shared 55×55 coverage grid · HiPHI + BONES-SEED</span></div>
             <button class="btn small" type="button" data-tsne-envelope-reset>Reset pair</button>
           </div>
           <div class="envelope-toolbar" data-tsne-envelope-controls aria-label="Toggle datasets in the envelope overlay"></div>
           <div class="envelope-stage">
             <canvas data-tsne-envelope-canvas aria-label="Overlayed t-SNE occupancy envelopes"></canvas>
           </div>
-          <figcaption>Toggle datasets to overlay occupied cells in the archived paper-panel 55×55 t-SNE grid. HiPHI and BONES-SEED are shown by default for direct comparison.</figcaption>
+          <figcaption>Overlay occupied cells in the shared 55×55 t-SNE grid and compare the support of HiPHI with representative motion datasets.</figcaption>
         </figure>
         <figure class="card atlas-tail-viz" data-tsne-tail-viz>
           <div class="tail-viz-head">
@@ -118,19 +125,21 @@
 
     <section id="frame-lu" class="section-pad content-grid frame-section site-section">
       <div class="section-heading compact">
-        <p class="eyebrow">Frame-LU construction</p>
-        <h2>FrameNet seeds become coverage-guided motion construction.</h2>
-        <p>HiPHI uses FrameNet frames and lexical units as motion seeds. Each Frame-LU expands through controlled realization factors such as speed, direction, posture, body-part involvement, and object/contact conditions.</p>
+        <p class="eyebrow">Frame–LU construction</p>
+        <h2>FrameNet turns motion capture into a scalable coverage engine.</h2>
+        <p>A frame defines an event type and a lexical unit identifies the word sense that evokes it. Every Frame–LU pair becomes a family of motions, expanded across path, direction, speed, rhythm, amplitude, posture, body-part involvement, support, and object/contact conditions.</p>
         <div class="metric-chips">
           <span><b data-stat-key="framenetFrames">22</b> FrameNet frames</span>
-          <span><b data-stat-key="frameLuLabels">214</b> Frame-LU labels</span>
-          <span><b data-stat-key="medianActorsPerFrameLu">27</b> median actors per Frame-LU</span>
-          <span><b data-stat-key="frameLusAtLeast10Actors">143</b> Frame-LUs with ≥10 actors</span>
+          <span><b data-stat-key="frameLuLabels">214</b> Frame–LU labels</span>
+          <span><b data-stat-key="medianActorsPerFrameLu">24</b> median actors per Frame–LU</span>
+          <span><b data-stat-key="frameLusAtLeast10Actors">154</b> Frame–LUs with ≥10 actors</span>
+          <span><b data-stat-key="top50FrameLuDurationSharePercent" data-stat-format="percent">53.7%</b> top-50 duration share</span>
+          <span><b data-stat-key="remainingFrameLuDurationSharePercent" data-stat-format="percent">46.3%</b> long-tail duration share</span>
         </div>
       </div>
       <figure class="pipeline-figure card">
         <img src="static/images/framenet_pipeline.png" alt="Figure showing the FrameNet to HiPHI data-construction pipeline" loading="lazy">
-        <figcaption>Pipeline figure: motion-relevant FrameNet frames and lexical units define motion seeds, which are expanded through controlled realization factors before optical MoCap capture and release packaging.</figcaption>
+        <figcaption>From FrameNet to HiPHI data construction: motion-relevant frames and lexical units define motion seeds, then controlled factors expand them into a broad, structured motion space.</figcaption>
       </figure>
       <div class="browser-grid card">
         <div class="family-list" data-frame-family-list></div>
@@ -140,20 +149,20 @@
           <div class="lu-chip-wrap" data-lu-chips></div>
           <div class="preview-card skeleton-card" data-lu-preview>
             <div class="skeleton-lines" aria-hidden="true"></div>
-            <div><strong>Representative motion preview</strong><p>Select a Frame-LU chip to inspect a representative motion preview.</p></div>
+            <div><strong>Representative motion preview</strong><p>Select a Frame–LU chip to inspect a representative motion preview.</p></div>
           </div>
         </div>
         <div class="pipeline card soft-card pipeline-flow frame-flow" aria-label="HiPHI data pipeline">
           <div class="flow-head">
             <span>Construction path</span>
-            <strong>Frame-LU → MoCap release</strong>
+            <strong>Frame–LU → motion-space expansion</strong>
           </div>
           <ol class="flow-steps">
             <li><span>01</span><b>FrameNet frames</b></li>
-            <li><span>02</span><b>Frame-LU seeds</b></li>
+            <li><span>02</span><b>Frame–LU seeds</b></li>
             <li><span>03</span><b>Controlled factors</b></li>
             <li><span>04</span><b>Optical MoCap</b></li>
-            <li><span>05</span><b>BVH, objects, meshes</b></li>
+            <li><span>05</span><b>BVH + synchronized object state</b></li>
           </ol>
         </div>
       </div>
@@ -161,13 +170,17 @@
 
     <section id="object-interaction" class="section-pad content-grid object-section site-section">
       <div class="section-heading compact">
-        <p class="eyebrow">Object-grounded motion</p>
-        <h2>Object state is part of the motion record.</h2>
-        <p>HiPHI records synchronized human motion, object trajectories, and object meshes. Object-interaction is therefore physically grounded rather than a text label attached after capture.</p>
+        <p class="eyebrow">Physically grounded interaction</p>
+        <h2>Real objects. Real constraints. Complete interaction state.</h2>
+        <p>HiPHI captures full-body motion together with mesh-level object trajectories, preserving the geometry, load, inertia, resistance, and contact that shape executable humanoid behavior.</p>
         <div class="metric-chips">
-          <span><b data-stat-key="strictObjectInteractionHours" data-stat-format="hours">245.7 h</b> strict object-interaction</span>
-          <span><b data-stat-key="strictObjectInteractionSharePercent" data-stat-format="percent">39.8%</b> strict share</span>
+          <span><b data-stat-key="strictObjectInteractionHours" data-stat-format="hours">245.7 h</b> human-object interaction</span>
+          <span><b data-stat-key="strictObjectInteractionSharePercent" data-stat-format="percent">39.8%</b> of the release</span>
+          <span><b data-stat-key="objectInstances">40</b> real-world objects</span>
           <span><b data-stat-key="objectCategories">12</b> object categories</span>
+          <span><b data-stat-key="hoiFrameLuLabels">90</b> Frame–LUs</span>
+          <span><b data-stat-key="hoiFrameNetFrames">15</b> FrameNet frames</span>
+          <span><b>0.45–6.25 kg</b> object mass range</span>
           <span>98.1% non-conflict</span>
           <span>95.7% near-surface grounding</span>
         </div>
@@ -180,9 +193,15 @@
 
     <section id="g1" class="section-pad content-grid g1-section site-section">
       <div class="section-heading compact">
-        <p class="eyebrow">Humanoid evaluation</p>
-        <h2>G1 retargeted reference playback.</h2>
-        <p>G1 retargeted reference playback provides a qualitative view of humanoid-ready motion transfer.</p>
+        <p class="eyebrow">Humanoid learning</p>
+        <h2>From high-fidelity motion to real-world Unitree G1.</h2>
+        <p>HiPHI achieves the highest matched-budget tracking success rates and fastest convergence, keeps improving as training data scales from 3 to 300 hours, and transfers to real hardware across running, sitting, crawling, carrying, flipping, and pulling.</p>
+        <div class="metric-chips">
+          <span><b>Highest</b> matched-budget success</span>
+          <span><b>3→300 h</b> continuous scaling gains</span>
+          <span><b>5 runs</b> lower failure rates</span>
+          <span><b>Real G1</b> deployment</span>
+        </div>
       </div>
       <div class="g1-player card glass g1-mesh-player">
         <iframe class="g1-mesh-frame" data-heavy-iframe data-src="static/interactive/g1_motion_browser.html?embed=1" title="G1 robot mesh playback" loading="lazy" srcdoc="&lt;!doctype html&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{height:100%;margin:0}body{display:grid;place-items:center;background:linear-gradient(135deg,#fffafd,#fff1f8);font-family:Inter,system-ui,sans-serif;color:#181827}.box{text-align:center;border:1px solid rgba(154,75,139,.18);border-radius:24px;padding:24px 30px;background:rgba(255,255,255,.78);box-shadow:0 20px 60px rgba(104,44,98,.10)}b{color:#b044f4}p{color:#696174;margin:.45rem 0 0}&lt;/style&gt;&lt;div class=&quot;box&quot;&gt;&lt;b&gt;G1 robot preview&lt;/b&gt;&lt;p&gt;Retargeted reference playback.&lt;/p&gt;&lt;/div&gt;"></iframe>
@@ -192,8 +211,8 @@
     <section id="benchmark" class="section-pad content-grid benchmark-section site-section">
       <div class="section-heading compact">
         <p class="eyebrow">Benchmark</p>
-        <h2>Benchmark summary.</h2>
-        <p>Visual cards summarize motion coverage, body-motion precision, and object-interaction geometry, with detailed values kept below for exact comparison.</p>
+        <h2>Broader coverage. Higher fidelity. Stronger humanoid learning.</h2>
+        <p>HiPHI spans the broadest kinematic region in the benchmark, leads every reported body-motion quality metric, delivers strong human-object geometric consistency, and turns scale into measurable tracking gains.</p>
       </div>
       <div class="benchmark-redesign">
         <article class="card glass benchmark-hero-card">
@@ -215,16 +234,16 @@
 
         <article class="card benchmark-visual-card benchmark-precision-card">
           <div class="benchmark-card-head">
-            <h3>Body-motion precision</h3>
-            <p>Lower values indicate smoother, cleaner, and more floor-consistent motion.</p>
+            <h3>Best-in-benchmark body-motion quality</h3>
+            <p>Lower jerk, acceleration, ground penetration, floating, and support-point drift.</p>
           </div>
           <div class="precision-bars" data-precision-bar-list></div>
         </article>
 
         <article class="card benchmark-visual-card benchmark-object-card">
           <div class="benchmark-card-head">
-            <h3>Object-interaction geometry</h3>
-            <p>Duration, non-conflict, and near-surface grounding in one compact view.</p>
+            <h3>Human-object geometric consistency</h3>
+            <p>Massive interaction scale with strong non-conflict and near-surface grounding.</p>
           </div>
           <div class="object-benchmark-bars" data-object-bar-list></div>
         </article>
@@ -238,7 +257,6 @@
             <div class="table-wrap" data-body-table></div>
             <div class="table-wrap" data-object-table></div>
           </div>
-          <p class="caption">Motion-X++ floor metrics are unavailable because a comparable absolute floor convention is not available.</p>
         </article>
       </div>
     </section>
@@ -247,8 +265,8 @@
       <div class="release-top">
         <div class="release-copy">
           <p class="eyebrow">Release</p>
-          <h2>Release details.</h2>
-          <p>The complete dataset will be released after paper acceptance. The planned release is organized around BVH human motion, object trajectories, object meshes, Frame-LU index, and metadata manifests.</p>
+          <h2>A research-ready benchmark built to scale.</h2>
+          <p>The 617.5-hour release combines high-fidelity BVH motion, synchronized object trajectories and meshes, Frame–LU indexing, natural-language descriptions, and rich metadata in one unified resource for humanoid learning.</p>
         </div>
       </div>
       <div class="release-grid release-grid-wide">
@@ -258,19 +276,19 @@
             <li><b>BVH</b><span>human motion</span></li>
             <li><b>Object trajectories</b><span>synchronized state</span></li>
             <li><b>Object meshes</b><span>interaction geometry</span></li>
-            <li><b>Frame-LU index</b><span>lexical motion seed</span></li>
-            <li><b>Metadata manifest</b><span>clip-level records</span></li>
+            <li><b>Frame–LU index</b><span>motion-space meaning</span></li>
+            <li><b>Descriptions + metadata</b><span>retrieval-ready records</span></li>
           </ul>
         </article>
         <article class="release-list card release-metadata-card">
           <h3>Metadata fields</h3>
           <div class="field-list release-field-grid">
-            <span>clip_id</span><span>bvh_path</span><span>duration_sec</span><span>frame_count</span><span>fps</span><span>actor_id</span><span>frame</span><span>lu</span><span>frame_lu</span><span>motion_group</span><span>strict_object_interaction</span><span>object_id</span><span>object_category</span><span>interaction_type</span><span>object_trajectory_available</span><span>object_mesh_available</span><span>mirror_flag</span><span>parent_clip_id</span>
+            <span>motion_id</span><span>frame</span><span>lu</span><span>frame_lu</span><span>duration_sec</span><span>frame_count</span><span>actor_id</span><span>text_annotation</span><span>is_hoi</span><span>object_categories</span><span>mirrored</span><span>dataset</span><span>fps</span><span>actor_metadata</span><span>objects</span><span>object_id</span><span>object_category</span><span>trajectory_path</span><span>mesh_id</span><span>mesh_path</span>
           </div>
         </article>
         <article class="release-list card release-license-card">
           <h3>License</h3>
-          <p>HiPHI Research License v1.0, non-commercial research use.</p>
+          <p>ModalityNet Open Research License v1.0 for non-commercial scientific research, education, and evaluation.</p>
         </article>
       </div>
     </section>
@@ -279,7 +297,7 @@
   <footer class="site-footer">
     <div class="content-grid footer-grid">
       <strong>HiPHI</strong>
-      <span>Anonymous project page for review.</span>
+      <span>High-fidelity motion data for physically grounded humanoid learning.</span>
     </div>
   </footer>
 

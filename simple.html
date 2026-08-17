@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Simplified HiPHI project page with title, overview, FrameNet pipeline, and t-SNE atlas.">
+  <meta name="description" content="HiPHI is a 617.5-hour high-fidelity optical MoCap dataset and benchmark that expands motion-space coverage and powers real-world humanoid learning.">
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -27,7 +27,12 @@
       <div class="title-wrap">
         <h1 class="wordmark" aria-label="HiPHI"><span class="hi">Hi</span><span class="phi">PHI</span></h1>
         <h2 class="title-lines"><span>A Large-Scale Benchmark</span><span>for High-Precision Human Motion</span><span>and Object-Interaction</span></h2>
-        <p class="title-tagline">High-precision optical MoCap, synchronized object-interaction, and Frame-LU motion units for humanoid learning.</p>
+        <p class="title-tagline">617.5 hours of high-fidelity whole-body motion and physically grounded interaction—built to scale humanoid learning.</p>
+        <div class="paper-byline" aria-label="Paper authors and affiliations">
+          <p class="author-list">Jiahao Ji<sup>1,2,*</sup>, Ji Ma<sup>1,5,*</sup>, Runhan Zhang<sup>1,3,*</sup>, Runyi Yu<sup>1,4</sup>, Wenjia Wang<sup>1,5</sup>, Weiheng Chi<sup>1</sup>, Qianqian Peng<sup>1</sup>, Weichao Yan<sup>1</sup>, Yongfei Gu<sup>1</sup>, Ye Tian<sup>1</sup>, Ting Wu<sup>1</sup>, Longwei Li<sup>1</sup>, Chun Yuan<sup>3</sup>, Ruoli Dai<sup>1,†</sup>, Lei Han<sup>1,†</sup></p>
+          <p class="affiliation-list"><span><sup>1</sup>Noitom Robotics</span><span><sup>2</sup>National University of Singapore</span><span><sup>3</sup>SIGS, Tsinghua University</span><span><sup>4</sup>The Hong Kong University of Science and Technology</span><span><sup>5</sup>The University of Hong Kong</span></p>
+          <p class="author-notes"><span><sup>*</sup>Equal contribution</span><span><sup>†</sup>Corresponding authors</span></p>
+        </div>
         <nav class="hero-actions project-links" aria-label="Project resources">
           <a class="btn primary" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">GitHub</a>
           <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">arXiv</a>
@@ -40,7 +45,7 @@
 
     <section id="overview" class="simple-section overview-section">
       <div class="section-title-top">
-        <h2>FrameNet-guided motion units, captured as high-precision MoCap.</h2>
+        <h2>The motion data foundation for physically grounded humanoid intelligence.</h2>
       </div>
       <figure class="card overview-video section-media" aria-label="HiPHI overview video">
         <video controls muted playsinline preload="metadata" poster="static/images/hero_poster.webp">
@@ -50,42 +55,46 @@
       <p class="eyebrow media-tag">Overview</p>
       <div class="overview-grid">
         <article class="card overview-copy">
-          <p>HiPHI is a 617.5-hour optical MoCap benchmark for high-precision human motion and object-interaction. The dataset construction starts from lexical FrameNet seeds, expands them into Frame-LU motion units, and records synchronized human motion with object state when the motion requires it.</p>
+          <p>HiPHI turns motion capture into motion-space design. FrameNet-guided motion seeds systematically expand across direction, speed, amplitude, posture, body-part involvement, and object/contact conditions—creating broad, repeatable coverage at unprecedented scale.</p>
           <div class="fact-grid" aria-label="HiPHI facts">
-            <div><strong>617.5 h</strong><span>release duration</span></div>
+            <div><strong>617.5 h</strong><span>released motion</span></div>
+            <div><strong>308.7 h</strong><span>original capture</span></div>
             <div><strong>200.1M</strong><span>frames</span></div>
             <div><strong>90 Hz</strong><span>optical MoCap</span></div>
-            <div><strong>102</strong><span>performers</span></div>
+            <div><strong>132</strong><span>performers</span></div>
+            <div><strong>245.7 h</strong><span>object interaction</span></div>
           </div>
         </article>
         <div class="overview-cards">
-          <article class="card"><h3>Coverage-guided design</h3><p>FrameNet frames and lexical units become concrete motion seeds.</p></article>
-          <article class="card"><h3>Object-grounded interaction</h3><p>Human BVH, object trajectories, and meshes are synchronized in the motion record.</p></article>
-          <article class="card"><h3>Motion-space summary</h3><p>Coverage and precision are summarized through compact metrics and the interactive atlas.</p></article>
+          <article class="card"><h3>Systematic motion-space expansion</h3><p>FrameNet frames and lexical units become scalable Frame–LU motion seeds instead of one-off scripts.</p></article>
+          <article class="card"><h3>Mesh-level interaction grounding</h3><p>Synchronized human motion, object trajectories, and object meshes preserve the full physical interaction.</p></article>
+          <article class="card"><h3>Executable humanoid benchmark</h3><p>Coverage, quality, tracking, scaling, and real-world G1 deployment connect data directly to humanoid learning.</p></article>
         </div>
       </div>
     </section>
 
     <section id="framenet" class="simple-section framenet-section">
       <div class="section-title-top compact">
-        <h2>Lexical motion seeds become a controlled data-construction pipeline.</h2>
+        <h2>FrameNet turns motion capture into a scalable coverage engine.</h2>
       </div>
       <figure class="figure-card section-media">
         <img src="static/images/framenet_pipeline.png" width="4340" height="1352" alt="FrameNet to HiPHI data-construction pipeline" loading="eager">
       </figure>
-      <p class="eyebrow media-tag">FrameNet / Frame-LU</p>
-      <p class="media-description">HiPHI uses FrameNet frames and lexical units as motion seeds. Each Frame-LU expands through controlled realization factors such as speed, direction, posture, body-part involvement, and object/contact conditions.</p>
-      <div class="metric-row" aria-label="Frame-LU metrics">
+      <p class="eyebrow media-tag">Frame–LU construction</p>
+      <p class="media-description">A frame defines an event type and a lexical unit identifies the word sense that evokes it. Every Frame–LU pair becomes a family of motions, expanded across path, direction, speed, rhythm, amplitude, posture, body-part involvement, support, and object/contact conditions.</p>
+      <div class="metric-row metric-row-wide" aria-label="Frame–LU metrics">
         <div><strong>22</strong><span>FrameNet frames</span></div>
-        <div><strong>214</strong><span>Frame-LU labels</span></div>
-        <div><strong>27</strong><span>median actors per Frame-LU</span></div>
-        <div><strong>143</strong><span>Frame-LUs with ≥10 actors</span></div>
+        <div><strong>214</strong><span>Frame–LU labels</span></div>
+        <div><strong>24</strong><span>median actors per Frame–LU</span></div>
+        <div><strong>154</strong><span>Frame–LUs with ≥10 actors</span></div>
+        <div><strong>53.7%</strong><span>top-50 duration share</span></div>
+        <div><strong>46.3%</strong><span>long-tail duration share</span></div>
       </div>
     </section>
 
     <section id="tsne" class="simple-section tsne-section">
       <div class="section-title-top">
-        <h2>Interactive motion-space view.</h2>
+        <h2>The broadest kinematic motion space in the benchmark.</h2>
       </div>
       <div class="atlas-card card section-media">
         <div class="atlas-head">
@@ -95,7 +104,13 @@
         <iframe title="HiPHI t-SNE Motion Atlas" src="static/interactive/tSNE_explorer_simple.html" loading="lazy"></iframe>
       </div>
       <p class="eyebrow media-tag">t-SNE Motion Atlas</p>
-      <p class="media-description">Explore sampled motion-space neighborhoods and inspect representative skeleton motions from selected points.</p>
+      <p class="media-description">Explore the dataset-balanced shared embedding used to compare representative motion datasets under one unified kinematic protocol. HiPHI reaches 1,620 occupied cells, 1,443 effective cells, and a 14.1% rare-cell long tail.</p>
+      <div class="metric-row" aria-label="Motion-space coverage metrics">
+        <div><strong>1,620</strong><span>occupied cells</span></div>
+        <div><strong>1,443</strong><span>effective occupancy</span></div>
+        <div><strong>14.1%</strong><span>rare-cell long tail</span></div>
+        <div><strong>10.7%</strong><span>BONES-SEED rare-cell share</span></div>
+      </div>
     </section>
   </main>
 </body>

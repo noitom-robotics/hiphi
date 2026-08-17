@@ -584,6 +584,34 @@ th, td { padding: .62rem .55rem; }
   color: #5a465c;
   margin: 0;
 }
+.paper-byline {
+  width: min(100%, 1480px);
+  margin-top: clamp(24px, 3vh, 38px);
+  display: grid;
+  gap: .62rem;
+}
+.paper-byline p { margin: 0; }
+.author-list {
+  color: var(--ink);
+  font-size: clamp(.94rem, .92vw, 1.1rem);
+  line-height: 1.72;
+  font-weight: 760;
+}
+.affiliation-list,
+.author-notes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .35rem 1rem;
+  line-height: 1.5;
+}
+.affiliation-list { color: #5f5067; font-size: clamp(.78rem, .72vw, .9rem); }
+.author-notes { color: var(--muted); font-size: .78rem; }
+.paper-byline sup {
+  color: var(--purple);
+  font-size: .7em;
+  line-height: 0;
+}
 .hero-title-cover .stat-ribbon {
   width: min(100%, 1540px);
   margin: 0 auto;
@@ -1446,9 +1474,39 @@ th, td { padding: .62rem .55rem; }
   .release-format-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  .hero-title-cover { padding-inline: 3vw; }
+  .hero-title-cover .hero-shell,
+  .hero-main-titleonly,
+  .hero-main-titleonly .hero-copy {
+    width: 100%;
+    min-width: 0;
+  }
+  .hero-title-cover h2,
+  .hero-title-cover .hero-lede,
+  .paper-byline {
+    width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    min-width: 0;
+  }
+  .hero-title-cover h2 {
+    font-size: clamp(1.8rem, 7.8vw, 2.2rem);
+    letter-spacing: -.05em;
+    overflow-wrap: anywhere;
+  }
+  .hero-title-cover .hero-lede { font-size: 1.05rem; line-height: 1.5; }
   .hero-title-cover .title-lines span { white-space: normal; }
-  .project-links { gap: .6rem; }
-  .project-links .btn { flex: 1 1 9rem; }
+  .project-links {
+    width: min(100%, 360px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .6rem;
+  }
+  .project-links .btn { width: 100%; min-width: 0; }
+  .project-links .btn:last-child { grid-column: 1 / -1; width: calc(50% - .3rem); justify-self: center; }
+  .paper-byline { gap: .75rem; }
+  .author-list { max-width: 100%; font-size: .86rem; line-height: 1.62; overflow-wrap: anywhere; }
+  .affiliation-list { gap: .32rem .7rem; font-size: .74rem; }
   .release-format-list { grid-template-columns: 1fr; }
 }
 

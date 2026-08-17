@@ -197,7 +197,7 @@ function renderFrameLu(data, motionData = null) {
       : rawClip;
     if (!clip?.positions?.length) {
       preview.classList.remove('has-frame-lu-player');
-      preview.innerHTML = `<div class="skeleton-lines" aria-hidden="true"></div><div><strong>${escapeHTML(ex.lu)}</strong><p><b>${escapeHTML(ex.frame)}</b> lexical unit preview. Select another Frame-LU to inspect an available motion sample.</p></div>`;
+      preview.innerHTML = `<div class="skeleton-lines" aria-hidden="true"></div><div><strong>${escapeHTML(ex.lu)}</strong><p><b>${escapeHTML(ex.frame)}</b> lexical unit preview. Select another Frame–LU to inspect an available motion sample.</p></div>`;
       return;
     }
     preview.classList.add('has-frame-lu-player');
@@ -206,7 +206,7 @@ function renderFrameLu(data, motionData = null) {
         <div class="frame-lu-player-head">
           <div>
             <strong>${escapeHTML(ex.frame)} · ${escapeHTML(ex.lu)}</strong>
-            <p>${escapeHTML(clip.prompt_summary || 'Representative motion sample for this Frame-LU.')}</p>
+            <p>${escapeHTML(clip.prompt_summary || 'Representative motion sample for this Frame–LU.')}</p>
           </div>
         </div>
         <div class="frame-lu-stage">
@@ -215,7 +215,7 @@ function renderFrameLu(data, motionData = null) {
         </div>
         <div class="playbar inline-playbar frame-lu-playbar">
           <button class="btn small" type="button" data-frame-lu-play>Pause</button>
-          <input type="range" min="0" max="0" value="0" data-frame-lu-scrub aria-label="Frame-LU playback frame">
+          <input type="range" min="0" max="0" value="0" data-frame-lu-scrub aria-label="Frame–LU playback frame">
           <span data-frame-lu-frame>0 / 0</span>
           <select data-frame-lu-speed aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
         </div>
