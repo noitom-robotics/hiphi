@@ -4,7 +4,7 @@
 
 **A large-scale benchmark for high-precision human motion and object interaction.**
 
-- **Project page:** [PROJECT_PAGE_URL]
+- **Hugging Face:** [noitomrobotics/HiPHI](https://huggingface.co/datasets/noitomrobotics/HiPHI)
 - **Paper:** [PAPER_URL]
 
 HiPHI is an optical motion-capture dataset for humanoid learning and
