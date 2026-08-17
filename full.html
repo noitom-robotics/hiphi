@@ -42,10 +42,10 @@
             </div>
             <nav class="hero-actions project-links" aria-label="Project resources">
               <a class="btn primary" href="https://huggingface.co/datasets/noitomrobotics/HiPHI" target="_blank" rel="noopener"><span class="btn-icon" aria-hidden="true">🤗</span>Dataset</a>
-              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">arXiv</a>
-              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener">Online Viewer</a>
-              <a class="btn" href="https://modalitynet.com/" target="_blank" rel="noopener">ModalityNet</a>
+              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener"><img class="btn-icon resource-icon" src="static/icons/arxiv.svg" alt="" aria-hidden="true">arXiv</a>
+              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener"><img class="btn-icon resource-icon" src="static/icons/github.svg" alt="" aria-hidden="true">GitHub</a>
+              <a class="btn" href="https://github.com/noitom-robotics/hiphi" target="_blank" rel="noopener"><span class="btn-icon" aria-hidden="true">👁️</span>Online Viewer</a>
+              <a class="btn" href="https://modalitynet.com/" target="_blank" rel="noopener"><img class="btn-icon resource-icon" src="static/icons/modalitynet.svg" alt="" aria-hidden="true">ModalityNet</a>
             </nav>
           </div>
         </div>
@@ -98,27 +98,6 @@
           <a class="btn" href="static/interactive/tSNE_explorer.html" target="_blank" rel="noopener">Open full page</a>
         </div>
         <iframe title="HiPHI Motion Atlas" src="static/interactive/tSNE_explorer.html" loading="lazy"></iframe>
-      </div>
-      <div class="atlas-artifacts wide-grid">
-        <figure class="card tsne-envelope" data-tsne-envelope>
-          <div class="envelope-head">
-            <div><strong>Motion-space support envelope</strong><span>Shared 55×55 coverage grid · HiPHI + BONES-SEED</span></div>
-            <button class="btn small" type="button" data-tsne-envelope-reset>Reset pair</button>
-          </div>
-          <div class="envelope-toolbar" data-tsne-envelope-controls aria-label="Toggle datasets in the envelope overlay"></div>
-          <div class="envelope-stage">
-            <canvas data-tsne-envelope-canvas aria-label="Overlayed t-SNE occupancy envelopes"></canvas>
-          </div>
-          <figcaption>Overlay occupied cells in the shared 55×55 t-SNE grid and compare the support of HiPHI with representative motion datasets.</figcaption>
-        </figure>
-        <figure class="card atlas-tail-viz" data-tsne-tail-viz>
-          <div class="tail-viz-head">
-            <strong>Long-tail coverage</strong>
-            <span>55×55 grid statistics</span>
-          </div>
-          <canvas data-tsne-tail-canvas aria-label="Long-tail coverage statistics chart"></canvas>
-          <div class="tail-viz-kpis" data-tsne-tail-kpis></div>
-        </figure>
       </div>
     </section>
 
@@ -202,6 +181,26 @@
           <span><b>Real G1</b> deployment</span>
         </div>
       </div>
+      <figure class="card scaling-card">
+        <div class="scaling-card-head">
+          <div>
+            <p class="eyebrow">Data scaling</p>
+            <h3>Scaling behavior for humanoid tracking</h3>
+            <p>Unmirrored HiPHI training data · mean MPJPE across 10 runs · lower is better</p>
+          </div>
+          <div class="scaling-kpis" aria-label="Scaling experiment summary">
+            <span><b>3→300 h</b> training scale</span>
+            <span><b>5 families</b> consistent gains</span>
+          </div>
+        </div>
+        <div class="scaling-chart-scroll" tabindex="0" aria-label="Horizontally scrollable scaling chart on compact screens">
+          <svg data-scaling-chart viewBox="0 0 1360 390" role="img" aria-labelledby="scaling-chart-title scaling-chart-desc">
+            <title id="scaling-chart-title">HiPHI humanoid tracking scaling curves</title>
+            <desc id="scaling-chart-desc">Mean MPJPE decreases as HiPHI training data increases from 3 to 300 hours across AMASS, BONES-SEED, Motion-X++, LaFAN1, and HiPHI.</desc>
+          </svg>
+        </div>
+        <figcaption>More HiPHI training data consistently reduces tracking error across every reported evaluation family.</figcaption>
+      </figure>
       <div class="g1-player card glass g1-mesh-player">
         <iframe class="g1-mesh-frame" data-heavy-iframe data-src="static/interactive/g1_motion_browser.html?embed=1" title="G1 robot mesh playback" loading="lazy" srcdoc="&lt;!doctype html&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{height:100%;margin:0}body{display:grid;place-items:center;background:linear-gradient(135deg,#fffafd,#fff1f8);font-family:Inter,system-ui,sans-serif;color:#181827}.box{text-align:center;border:1px solid rgba(154,75,139,.18);border-radius:24px;padding:24px 30px;background:rgba(255,255,255,.78);box-shadow:0 20px 60px rgba(104,44,98,.10)}b{color:#b044f4}p{color:#696174;margin:.45rem 0 0}&lt;/style&gt;&lt;div class=&quot;box&quot;&gt;&lt;b&gt;G1 robot preview&lt;/b&gt;&lt;p&gt;Retargeted reference playback.&lt;/p&gt;&lt;/div&gt;"></iframe>
       </div>

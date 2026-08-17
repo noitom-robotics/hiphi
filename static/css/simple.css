@@ -166,6 +166,8 @@ a { color: inherit; text-decoration: none; }
 .btn:focus-visible { outline: 3px solid rgba(176,68,244,.34); outline-offset: 3px; }
 .btn.primary { color: white; background: linear-gradient(135deg, var(--purple), var(--rose)); border-color: transparent; }
 .btn-icon { display: inline-flex; margin-right: .48rem; font-size: 1.08em; line-height: 1; }
+.project-links .btn-icon { width: 1.15em; height: 1.15em; align-items: center; justify-content: center; flex: 0 0 auto; }
+.resource-icon { object-fit: contain; }
 .simple-section {
   width: min(84vw, var(--max));
   margin: 0 auto;

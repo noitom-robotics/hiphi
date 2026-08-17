@@ -927,233 +927,157 @@ function hexToRgb(hex) {
   return [parseInt(raw.slice(0, 2), 16), parseInt(raw.slice(2, 4), 16), parseInt(raw.slice(4, 6), 16)];
 }
 
-function renderTsneEnvelope(data) {
-  const host = $('[data-tsne-envelope]');
-  const canvas = $('[data-tsne-envelope-canvas]', host || document);
-  const controls = $('[data-tsne-envelope-controls]', host || document);
-  if (!host || !canvas || !controls || !data?.datasets?.length) return;
+function renderScalingChart(data) {
+  const svg = $('[data-scaling-chart]');
+  const hours = data?.hours;
+  const series = data?.series;
+  if (!svg || !Array.isArray(hours) || hours.length < 2 || !Array.isArray(series) || !series.length) return;
 
-  const desired = ['HiPHI', 'BONES-SEED-SOMA', 'AMASS', 'Motion-X++', 'LaFAN1'];
-  const byName = new Map(data.datasets.map(ds => [ds.name, ds]));
-  const datasets = desired.map(name => byName.get(name)).filter(Boolean)
-    .concat(data.datasets.filter(ds => !desired.includes(ds.name)));
-  const defaults = new Set(data.default_visible?.length ? data.default_visible : ['HiPHI', 'BONES-SEED-SOMA']);
-  const visible = new Set(datasets.filter(ds => defaults.has(ds.name)).map(ds => ds.name));
-  const grid = data.grid || 55;
-  const ctx = canvas.getContext('2d');
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const width = 1360;
+  const height = 390;
+  const chartTop = 68;
+  const chartBottom = 314;
+  const side = 28;
+  const gap = 18;
+  const panelWidth = (width - side * 2 - gap * (series.length - 1)) / series.length;
+  const logMin = Math.log10(Math.min(...hours));
+  const logMax = Math.log10(Math.max(...hours));
 
-  const buttons = datasets.map(ds => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = `${ds.display} · ${ds.occupied_cells}`;
-    button.style.setProperty('--dataset-color', ds.color || '#b044f4');
-    button.dataset.dataset = ds.name;
-    button.setAttribute('aria-pressed', String(visible.has(ds.name)));
-    button.addEventListener('click', () => {
-      if (visible.has(ds.name)) visible.delete(ds.name);
-      else visible.add(ds.name);
-      if (!visible.size) visible.add(ds.name);
-      sync();
+  const make = (tag, attrs = {}, text = '') => {
+    const node = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value)));
+    if (text !== '') node.textContent = text;
+    return node;
+  };
+  const title = make('title', { id: 'scaling-chart-title' }, data.title || 'HiPHI humanoid tracking scaling curves');
+  const desc = make('desc', { id: 'scaling-chart-desc' }, 'Mean MPJPE decreases as HiPHI training data increases from 3 to 300 hours across all five reported evaluation families.');
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg.replaceChildren(title, desc);
+
+  series.forEach((item, index) => {
+    const group = make('g', { class: 'scaling-panel' });
+    const panelX = side + index * (panelWidth + gap);
+    const plotLeft = panelX + 43;
+    const plotRight = panelX + panelWidth - 12;
+    const plotWidth = plotRight - plotLeft;
+    const [domainMin, domainMax] = item.y_domain;
+    const color = /^#[0-9a-f]{6}$/i.test(item.color || '') ? item.color : '#b044f4';
+    const scaleX = hour => plotLeft + ((Math.log10(hour) - logMin) / (logMax - logMin)) * plotWidth;
+    const scaleY = value => chartBottom - ((value - domainMin) / (domainMax - domainMin)) * (chartBottom - chartTop);
+    const clampY = value => scaleY(Math.max(domainMin, Math.min(domainMax, value)));
+
+    group.appendChild(make('rect', {
+      class: 'scaling-panel-bg',
+      x: panelX,
+      y: 8,
+      width: panelWidth,
+      height: 348,
+      rx: 18,
+    }));
+    group.appendChild(make('text', {
+      class: 'scaling-panel-title',
+      x: panelX + panelWidth / 2,
+      y: 36,
+      'text-anchor': 'middle',
+    }, item.name));
+
+    item.y_ticks.forEach(tick => {
+      const y = scaleY(tick);
+      group.appendChild(make('line', {
+        class: 'scaling-grid-line',
+        x1: plotLeft,
+        x2: plotRight,
+        y1: y,
+        y2: y,
+      }));
+      group.appendChild(make('text', {
+        class: 'scaling-axis-label',
+        x: plotLeft - 8,
+        y: y + 4,
+        'text-anchor': 'end',
+      }, tick));
     });
-    controls.appendChild(button);
-    return button;
+
+    hours.forEach((hour, hourIndex) => {
+      const x = scaleX(hour);
+      group.appendChild(make('line', {
+        class: 'scaling-tick',
+        x1: x,
+        x2: x,
+        y1: chartBottom,
+        y2: chartBottom + 5,
+      }));
+      group.appendChild(make('text', {
+        class: 'scaling-axis-label',
+        x,
+        y: chartBottom + 22,
+        'text-anchor': hourIndex === 0 ? 'start' : hourIndex === hours.length - 1 ? 'end' : 'middle',
+      }, hour));
+    });
+
+    const upper = hours.map((hour, pointIndex) => [
+      scaleX(hour),
+      clampY(item.mean[pointIndex] + item.population_std[pointIndex]),
+    ]);
+    const lower = hours.map((hour, pointIndex) => [
+      scaleX(hour),
+      clampY(item.mean[pointIndex] - item.population_std[pointIndex]),
+    ]).reverse();
+    const bandPath = [...upper, ...lower]
+      .map(([x, y], pointIndex) => `${pointIndex ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`)
+      .join(' ') + ' Z';
+    group.appendChild(make('path', {
+      class: 'scaling-variance-band',
+      d: bandPath,
+      fill: color,
+    }));
+
+    const linePath = hours.map((hour, pointIndex) => {
+      const x = scaleX(hour);
+      const y = scaleY(item.mean[pointIndex]);
+      return `${pointIndex ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`;
+    }).join(' ');
+    group.appendChild(make('path', {
+      class: 'scaling-mean-line',
+      d: linePath,
+      stroke: color,
+    }));
+
+    hours.forEach((hour, pointIndex) => {
+      const x = scaleX(hour);
+      const y = scaleY(item.mean[pointIndex]);
+      group.appendChild(make('circle', {
+        class: 'scaling-point',
+        cx: x,
+        cy: y,
+        r: 4,
+        fill: color,
+      }));
+      group.appendChild(make('text', {
+        class: 'scaling-value-label',
+        x,
+        y: y - 11,
+        fill: color,
+        'text-anchor': pointIndex === 0 ? 'start' : pointIndex === hours.length - 1 ? 'end' : 'middle',
+      }, Number(item.mean[pointIndex]).toFixed(1)));
+    });
+
+    group.appendChild(make('line', {
+      class: 'scaling-axis',
+      x1: plotLeft,
+      x2: plotRight,
+      y1: chartBottom,
+      y2: chartBottom,
+    }));
+    group.appendChild(make('text', {
+      class: 'scaling-x-title',
+      x: panelX + panelWidth / 2,
+      y: 374,
+      'text-anchor': 'middle',
+    }, 'HiPHI training data (h)'));
+    svg.appendChild(group);
   });
-
-  const reset = $('[data-tsne-envelope-reset]', host);
-  reset?.addEventListener('click', () => {
-    visible.clear();
-    defaults.forEach(name => visible.add(name));
-    sync();
-  });
-
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.max(1, Math.floor(rect.width * dpr));
-    const h = Math.max(1, Math.floor(rect.height * dpr));
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    return { width: rect.width, height: rect.height };
-  }
-
-  function draw() {
-    const rect = resize();
-    const w = rect.width;
-    const h = rect.height;
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#fff7fd';
-    ctx.fillRect(0, 0, w, h);
-
-    const pad = Math.max(28, Math.min(w, h) * 0.045);
-    const size = Math.max(1, Math.min(w - pad * 2, h - pad * 2));
-    const left = (w - size) / 2;
-    const top = (h - size) / 2;
-    const cell = size / grid;
-
-    ctx.save();
-    ctx.fillStyle = 'rgba(255,255,255,.62)';
-    ctx.strokeStyle = 'rgba(176,68,244,.14)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(left, top, size, size, 18);
-    ctx.fill();
-    ctx.stroke();
-    ctx.clip();
-
-    ctx.strokeStyle = 'rgba(216,184,221,.52)';
-    ctx.lineWidth = 0.6;
-    for (let i = 0; i <= grid; i += 5) {
-      const pos = left + i * cell;
-      ctx.beginPath(); ctx.moveTo(pos, top); ctx.lineTo(pos, top + size); ctx.stroke();
-      const y = top + i * cell;
-      ctx.beginPath(); ctx.moveTo(left, y); ctx.lineTo(left + size, y); ctx.stroke();
-    }
-
-    ctx.globalCompositeOperation = 'multiply';
-    datasets.forEach(ds => {
-      if (!visible.has(ds.name)) return;
-      const [r, g, b] = hexToRgb(ds.color);
-      ctx.fillStyle = `rgba(${r},${g},${b},0.48)`;
-      (ds.cells || []).forEach(([x, y]) => {
-        ctx.fillRect(left + x * cell, top + (grid - 1 - y) * cell, Math.ceil(cell) + 0.25, Math.ceil(cell) + 0.25);
-      });
-    });
-    ctx.restore();
-
-    ctx.save();
-    ctx.fillStyle = 'rgba(33,23,43,.82)';
-    ctx.font = '800 13px Inter, system-ui, sans-serif';
-    const active = datasets.filter(ds => visible.has(ds.name));
-    const label = active.map(ds => ds.display).join(' + ');
-    ctx.fillText(label || 'Select a dataset', left, Math.max(18, top - 10));
-    ctx.fillStyle = 'rgba(108,88,112,.82)';
-    ctx.font = '700 11px Inter, system-ui, sans-serif';
-    ctx.fillText(`${grid}×${grid} occupancy grid`, left + size - 126, Math.max(18, top - 10));
-    ctx.restore();
-  }
-
-  function sync() {
-    buttons.forEach(button => button.setAttribute('aria-pressed', String(visible.has(button.dataset.dataset))));
-    draw();
-  }
-
-  const observer = new ResizeObserver(() => draw());
-  observer.observe(canvas);
-  addEventListener('resize', draw, { passive: true });
-  sync();
-  renderTsneTailViz(data);
-}
-
-function renderTsneTailViz(data) {
-  const host = $('[data-tsne-tail-viz]');
-  const canvas = $('[data-tsne-tail-canvas]', host || document);
-  const kpis = $('[data-tsne-tail-kpis]', host || document);
-  if (!host || !canvas) return;
-
-  const fallback = [
-    { name: 'HiPHI', display: 'HiPHI (ours)', color: '#B98AD9', long_tail_percent: 14.1, effective_occupied_cells: 1443, occupied_cells: 1620 },
-    { name: 'BONES-SEED-SOMA', display: 'BONES-SEED', color: '#5E88BF', long_tail_percent: 10.7, effective_occupied_cells: 1114, occupied_cells: 1438 },
-  ];
-  const stats = (data.long_tail_stats?.length ? data.long_tail_stats : fallback)
-    .map(item => ({ ...item, long_tail_percent: Number(item.long_tail_percent ?? 0) }))
-    .filter(item => Number.isFinite(item.long_tail_percent));
-  if (!stats.length) return;
-  const ctx = canvas.getContext('2d');
-
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.max(1, Math.floor(rect.width * dpr));
-    const h = Math.max(1, Math.floor(rect.height * dpr));
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    return { width: rect.width, height: rect.height };
-  }
-
-  function roundRectPath(x, y, w, h, r) {
-    const rr = Math.min(r, w / 2, h / 2);
-    ctx.beginPath();
-    ctx.moveTo(x + rr, y);
-    ctx.lineTo(x + w - rr, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
-    ctx.lineTo(x + w, y + h - rr);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
-    ctx.lineTo(x + rr, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
-    ctx.lineTo(x, y + rr);
-    ctx.quadraticCurveTo(x, y, x + rr, y);
-  }
-
-  function draw() {
-    const { width: w, height: h } = resize();
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#fff7fd';
-    ctx.fillRect(0, 0, w, h);
-
-    const padX = Math.max(24, w * 0.075);
-    const top = Math.max(24, h * 0.12);
-    const bottom = Math.max(46, h * 0.18);
-    const chartH = Math.max(120, h - top - bottom);
-    const maxVal = Math.max(16, ...stats.map(s => s.long_tail_percent)) * 1.08;
-
-    ctx.strokeStyle = 'rgba(154,75,139,.14)';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'rgba(102,103,124,.68)';
-    ctx.font = '700 11px Inter, system-ui, sans-serif';
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'middle';
-    for (const tick of [0, 5, 10, 15]) {
-      if (tick > maxVal) continue;
-      const y = top + chartH - (tick / maxVal) * chartH;
-      ctx.beginPath(); ctx.moveTo(padX, y); ctx.lineTo(w - padX, y); ctx.stroke();
-      ctx.fillText(`${tick}%`, padX - 8, y);
-    }
-
-    const gap = Math.max(18, w * 0.06);
-    const barW = Math.min(96, (w - padX * 2 - gap * (stats.length - 1)) / stats.length * 0.56);
-    const groupW = stats.length * barW + (stats.length - 1) * gap;
-    let x = (w - groupW) / 2;
-    stats.forEach(s => {
-      const [r, g, b] = hexToRgb(s.color);
-      const bh = Math.max(4, (s.long_tail_percent / maxVal) * chartH);
-      const y = top + chartH - bh;
-      const grad = ctx.createLinearGradient(0, y, 0, top + chartH);
-      grad.addColorStop(0, `rgba(${r},${g},${b},0.92)`);
-      grad.addColorStop(1, `rgba(${r},${g},${b},0.42)`);
-      roundRectPath(x, y, barW, bh, 13);
-      ctx.fillStyle = grad; ctx.fill();
-      ctx.strokeStyle = `rgba(${r},${g},${b},0.88)`; ctx.stroke();
-
-      ctx.fillStyle = '#21172b';
-      ctx.textAlign = 'center';
-      ctx.font = '900 21px Inter, system-ui, sans-serif';
-      ctx.fillText(`${s.long_tail_percent.toFixed(1)}%`, x + barW / 2, y - 18);
-      ctx.fillStyle = 'rgba(33,23,43,.82)';
-      ctx.font = '800 12px Inter, system-ui, sans-serif';
-      ctx.fillText(s.display, x + barW / 2, top + chartH + 25);
-      x += barW + gap;
-    });
-
-    ctx.fillStyle = 'rgba(102,78,112,.78)';
-    ctx.textAlign = 'center';
-    ctx.font = '800 12px Inter, system-ui, sans-serif';
-    ctx.fillText('long-tail cell share', w / 2, h - 12);
-  }
-
-  if (kpis) {
-    kpis.innerHTML = stats.map(s => `<span style="--dataset-color:${escapeHTML(s.color)}"><b>${escapeHTML(String(Math.round(s.effective_occupied_cells || 0)))}</b><em>${escapeHTML(s.display)} effective cells</em></span>`).join('');
-  }
-
-  const observer = new ResizeObserver(draw);
-  observer.observe(canvas);
-  addEventListener('resize', draw, { passive: true });
-  draw();
 }
 
 function renderManifestPreview(data) {
@@ -1182,8 +1106,8 @@ async function main() {
     ]);
     renderObjects(objectManifest, objectMotion);
   } catch (err) { console.warn(err); }
-  if ($('[data-tsne-envelope]')) {
-    try { renderTsneEnvelope(await loadJSON('static/data/tsne_envelopes_55grid.json')); } catch (err) { console.warn(err); }
+  if ($('[data-scaling-chart]')) {
+    try { renderScalingChart(await loadJSON('static/data/humanoid_scaling.json')); } catch (err) { console.warn(err); }
   }
   if ($('[data-g1-player]')) {
     try { renderG1(await loadJSON('static/data/g1_npz_preview.json')); } catch (err) { console.warn(err); }

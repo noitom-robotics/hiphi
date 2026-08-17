@@ -29,6 +29,7 @@ FORBIDDEN_REGEXES = [
     ("credential-looking password assignment", re.compile(r"(?i)(?:password|passwd|pwd)\s*[:=]\s*[\'\"]?[^\s,;\'\"]+")),
     ("ssh credential hint", re.compile(r"ssh\s+[^\n]*@")),
 ]
+STALE_PERFORMER_RE = re.compile(r"\b102\s+(?:performers?|actors?)\b", re.IGNORECASE)
 MAX_ASSET_BYTES = 100 * 1024 * 1024
 WARN_ASSET_BYTES = 25 * 1024 * 1024
 
@@ -110,12 +111,23 @@ def check_stat_bindings(errors: list[str]) -> None:
     except Exception as exc:
         errors.append(f"cannot load stats source of truth: {stats_path.relative_to(ROOT)}: {exc}")
         return
+    if stats.get("performers") != 132:
+        errors.append(f"site_stats.json must publish 132 performers, found {stats.get('performers')!r}")
     for html in sorted(ROOT.glob("*.html")):
         parser = RefParser()
         parser.feed(html.read_text(encoding="utf-8"))
         missing = sorted({key for key in parser.stat_keys if key not in stats})
         if missing:
             errors.append(f"{html.relative_to(ROOT)} has data-stat-key values missing from site_stats.json: {missing}")
+
+
+def check_stale_performer_copy(errors: list[str]) -> None:
+    for path in [*sorted(ROOT.glob("*.html")), ROOT / "README.md"]:
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        public_copy = re.sub(r"<[^>]+>", " ", text)
+        public_copy = re.sub(r"\s+", " ", public_copy)
+        if STALE_PERFORMER_RE.search(public_copy):
+            errors.append(f"stale 102-performer claim: {path.relative_to(ROOT)}")
 
 
 def iter_json_asset_refs(value):
@@ -142,6 +154,35 @@ def check_json(errors: list[str]) -> None:
             if target and not target.exists():
                 shown = target.relative_to(ROOT) if target.is_relative_to(ROOT) else target
                 errors.append(f"missing JSON asset reference in {path.relative_to(ROOT)}: {ref!r} -> {shown}")
+
+
+def check_scaling_data(errors: list[str]) -> None:
+    path = ROOT / "static" / "data" / "humanoid_scaling.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"cannot load scaling data: {path.relative_to(ROOT)}: {exc}")
+        return
+    hours = data.get("hours")
+    series = data.get("series")
+    if hours != [3, 20, 100, 300]:
+        errors.append(f"scaling data must use the paper's 3/20/100/300-hour schedule, found {hours!r}")
+    if data.get("repeat_count") != 10:
+        errors.append(f"scaling data must report 10 repeated runs, found {data.get('repeat_count')!r}")
+    if not isinstance(series, list) or len(series) != 5:
+        errors.append("scaling data must contain the five paper evaluation families")
+        return
+    for item in series:
+        name = item.get("name", "unnamed")
+        means = item.get("mean")
+        std = item.get("population_std")
+        if not isinstance(means, list) or len(means) != len(hours or []):
+            errors.append(f"scaling mean length mismatch for {name}")
+            continue
+        if not isinstance(std, list) or len(std) != len(means):
+            errors.append(f"scaling variation length mismatch for {name}")
+        if any(next_value > value for value, next_value in zip(means, means[1:])):
+            errors.append(f"scaling curve is not monotonically decreasing for {name}")
 
 
 def check_forbidden_text(errors: list[str]) -> None:
@@ -174,7 +215,9 @@ def main() -> int:
     warnings: list[str] = []
     check_html_refs(errors)
     check_stat_bindings(errors)
+    check_stale_performer_copy(errors)
     check_json(errors)
+    check_scaling_data(errors)
     check_forbidden_text(errors)
     check_asset_sizes(warnings, errors)
 
