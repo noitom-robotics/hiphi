@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>HiPHI Motion Viewer</title>
+<link rel="stylesheet" href="./styles.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/": "./vendor/three/"
+  }
+}
+</script>
+</head>
+<body>
+<main class="page">
+  <header class="page-header">
+    <h1>HiPHI <span class="accent">Motion</span> Viewer</h1>
+    <p>High-fidelity human motion with tracked object interactions.</p>
+    <form id="open-form" class="open-form">
+      <input id="root-path" type="text" spellcheck="false"
+             placeholder="Path to an extracted HiPHI folder, or a .bvh file"
+             aria-label="Dataset path">
+      <button type="submit">Open</button>
+    </form>
+  </header>
+  <p id="open-error" class="open-error" hidden></p>
+
+  <div id="layout" class="layout">
+    <div id="rail" class="rail">
+      <input id="search" type="search" placeholder="Search motions..." aria-label="Search motions">
+
+      <section id="list-card" class="card">
+        <header class="card-header">
+          <span>Motions</span>
+          <b id="list-count"></b>
+        </header>
+        <div id="list-body" class="card-body list-body"></div>
+      </section>
+
+      <div id="split-list" class="splitter splitter-h" role="separator"
+           aria-orientation="horizontal" aria-label="Resize list and metadata"></div>
+
+      <section id="meta-card" class="card">
+        <header class="card-header">
+          <span>Metadata</span>
+          <b id="meta-title"></b>
+        </header>
+        <dl id="meta-body" class="card-body meta-body"></dl>
+      </section>
+    </div>
+
+    <div id="split-rail" class="splitter splitter-v" role="separator"
+         aria-orientation="vertical" aria-label="Resize panels"></div>
+
+    <div class="viewer-column">
+      <div id="viewer-panel" class="viewer-panel">
+        <div id="viewer"></div>
+      </div>
+      <div id="split-viewer" class="splitter splitter-h" role="separator"
+           aria-orientation="horizontal" aria-label="Resize viewer"></div>
+    </div>
+  </div>
+</main>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
