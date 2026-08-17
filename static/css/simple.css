@@ -112,14 +112,31 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.45;
   font-weight: 650;
 }
-.title-release {
-  margin: .65rem auto 0;
-  max-width: 860px;
-  color: #9b348e;
-  font-size: clamp(1rem, 1.08vw, 1.22rem);
-  line-height: 1.4;
-  font-weight: 820;
+.hero-actions {
+  width: min(100%, 980px);
+  margin: clamp(24px, 3.2vh, 38px) auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .75rem;
 }
+.btn {
+  min-width: 7.4rem;
+  min-height: 2.55rem;
+  padding: .7rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(176,68,244,.22);
+  border-radius: 999px;
+  background: white;
+  color: var(--ink);
+  font-weight: 850;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(104,44,98,.12); }
+.btn:focus-visible { outline: 3px solid rgba(176,68,244,.34); outline-offset: 3px; }
+.btn.primary { color: white; background: linear-gradient(135deg, var(--purple), var(--rose)); border-color: transparent; }
 .simple-section {
   width: min(84vw, var(--max));
   margin: 0 auto;
@@ -268,4 +285,8 @@ a { color: inherit; text-decoration: none; }
   .wordmark { font-size: clamp(5.6rem, 24vw, 10rem); }
   .simple-title h2 { font-size: clamp(2.2rem, 8vw, 4.4rem); }
   .atlas-card iframe { min-height: 760px; max-height: none; }
+}
+@media (max-width: 640px) {
+  .hero-actions { gap: .6rem; }
+  .hero-actions .btn { flex: 1 1 9rem; }
 }
