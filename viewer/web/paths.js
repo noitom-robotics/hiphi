@@ -3,13 +3,14 @@
  *
  * The release tree is:
  *
- *     object_meshes_preview/{mesh_id}.obj
+ *     object_meshes/{mesh_id}.obj
  *     data/{frame}/{lu}/{motion_id}/motion_actor.bvh
  *     data/{frame}/{lu}/{motion_id}/metadata.json
  *     data/{frame}/{lu}/{motion_id}/object_tracks/{object_id}.csv
  */
 
 const DATASET_BASE = '/dataset'
+const OBJECT_MESH_DIR = 'object_meshes'
 
 const encodePath = relPath => relPath.split('/').filter(Boolean).map(encodeURIComponent).join('/')
 
@@ -36,7 +37,7 @@ export function motionRelativeUrl(frame, lu, motionId, relPath) {
  *
  * Object entries mix both conventions: `trajectory_path` is relative to the
  * motion package ("object_tracks/Box_A_1.csv") while `mesh_path` is relative
- * to the dataset root ("object_meshes_preview/Box_A_1.obj"), because meshes
+ * to the dataset root ("object_meshes/Box_A_1.obj"), because meshes
  * are shared between motions and stored once.
  */
 export function datasetRelativeUrl(relPath) {
@@ -60,7 +61,7 @@ export function viewerObjectsFrom(frame, lu, motionId, meta) {
     objectId: o.object_id ?? o.mesh_id ?? 'object',
     meshUrl: o.mesh_path
       ? datasetRelativeUrl(o.mesh_path)
-      : datasetRelativeUrl(`object_meshes_preview/${o.mesh_id ?? o.object_id}.obj`),
+      : datasetRelativeUrl(`${OBJECT_MESH_DIR}/${o.mesh_id ?? o.object_id}.obj`),
     trackUrl: o.trajectory_path
       ? motionRelativeUrl(frame, lu, motionId, o.trajectory_path)
       : motionRelativeUrl(frame, lu, motionId, `object_tracks/${o.object_id}.csv`),

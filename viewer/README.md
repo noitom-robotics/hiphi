@@ -191,7 +191,7 @@ The release-wide CSV is entirely optional.
 HiPHI/
 ├── metadata/
 │   └── hiphi_metadata.csv                     (optional)
-├── object_meshes_preview/
+├── object_meshes/
 │   └── {mesh_id}.obj
 └── data/
     └── {frame}/{lu}/{motion_id}/

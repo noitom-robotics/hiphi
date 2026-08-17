@@ -7,7 +7,7 @@ frame / lu / motion_id
 ~~~
 
 A motion directory is the smallest logical data package. Its BVH, JSON
-metadata, and HOI trajectories remain together inside one archive; simplified
+metadata, and HOI trajectories remain together inside one archive; original
 meshes are shared at repository root to avoid duplicating identical assets
 across thousands of packages.
 
@@ -25,7 +25,7 @@ HiPHI/
 │   ├── hiphi_metadata.csv
 │   ├── hiphi_actor_metadata.csv
 │   └── frame_lu_index.csv
-├── object_meshes_preview/
+├── object_meshes/
 │   ├── {mesh_id}.obj
 │   └── {mesh_id}__mirror.obj
 ├── data/
@@ -36,7 +36,7 @@ HiPHI/
 │   └── motion_to_part.csv
 ~~~
 
-`object_meshes_preview/` contains exactly 40 canonical simplified meshes and
+`object_meshes/` contains exactly 40 canonical original meshes and
 40 reflected `__mirror` variants.
 
 The 32 `.tar.zst` files are independent archives. Every original/mirror pair
@@ -85,7 +85,7 @@ Additional files for HOI:
 - object_tracks/{object_id}.csv, one per tracked object.
 
 Every HOI metadata object references
-`object_meshes_preview/{mesh_id}.obj` relative to repository root. For mirrored
+`object_meshes/{mesh_id}.obj` relative to repository root. For mirrored
 HOI packages, `mesh_id` is `{source_mesh_id}__mirror`; that shared OBJ contains
 reflected local-X vertices and reversed face winding.
 

@@ -10,7 +10,7 @@
 HiPHI is an optical motion-capture dataset for humanoid learning and
 whole-body motion modeling. It provides standardized BVH motion and, for
 human-object interaction (HOI), synchronized object trajectories and
-corresponding simplified OBJ meshes.
+corresponding original high-resolution OBJ meshes.
 
 ## Overview
 
@@ -30,7 +30,7 @@ HOI accounts for **39.8%** of the total duration.
 | Performer IDs | 132 |
 | Semantics | 22 Frames, 214 Frame-LU labels |
 | Performer coverage | Median 24 performers per Frame-LU; 154 labels with at least 10 performers |
-| HOI assets | Package-local object trajectories plus shared simplified OBJ meshes |
+| HOI assets | Package-local object trajectories plus shared original high-resolution OBJ meshes |
 
 The top 10, top 20, and top 50 Frame-LUs account for **20.4%**, **31.8%**,
 and **53.7%** of the total duration.
@@ -65,7 +65,7 @@ HiPHI/
 │   ├── hiphi_metadata.csv
 │   ├── hiphi_actor_metadata.csv
 │   └── frame_lu_index.csv
-├── object_meshes_preview/
+├── object_meshes/
 │   ├── {mesh_id}.obj
 │   └── {mesh_id}__mirror.obj
 └── data/
@@ -78,7 +78,7 @@ HiPHI/
 
 Archive members use the logical path
 `HiPHI/data/{frame}/{lu}/{motion_id}`. Each motion directory contains its
-motion-specific data; HOI metadata links to the shared repository-level preview
+motion-specific data; HOI metadata links to the shared repository-level object
 mesh inventory. Mirrored packages use the suffix `__mirror` in the same
 Frame/LU directory. `data/motion_to_part.csv` maps each original/mirror pair to
 its archive.
@@ -127,7 +127,7 @@ Each HOI package contains:
 1. `motion_actor.bvh`;
 2. one trajectory CSV per tracked object;
 3. `metadata.json` linking the motion and trajectories to the corresponding
-   shared simplified OBJ mesh.
+   shared original high-resolution OBJ mesh.
 
 ### Object Trajectory CSV
 
@@ -147,26 +147,22 @@ object trajectory with the human motion.
 
 ### Object Mesh
 
-Release meshes use simplified Wavefront OBJ geometry without textures. Vertices
-are stored in centimeters in the object's local frame, while trajectory
-positions use meters:
+Release meshes use the original high-resolution Wavefront OBJ geometry.
+Vertices are stored in centimeters in the object's local frame, while
+trajectory positions use meters:
 
 ~~~text
 world_point_m = R(qx, qy, qz, qw) @ (0.01 * obj_vertex_cm)
                 + [px, py, pz]
 ~~~
 
-The repository-level `object_meshes_preview/` directory contains 40 canonical
+The repository-level `object_meshes/` directory contains 40 canonical
 meshes and 40 local-X-reflected `__mirror` variants. `mesh_path` in
 `metadata.json` is a repository-root-relative path to the matching OBJ, while
 `mesh_id` is its stable object-asset identifier. OBJ files are not duplicated
 inside motion packages.
 
-The Hugging Face release provides only simplified object meshes for preview
-and quick start. Researchers who need the original high-resolution scanned
-meshes may submit the high-resolution mesh request form:
-`[HIGH_RESOLUTION_MESH_REQUEST_FORM_URL]`. Requests are reviewed individually,
-and approved applicants will receive the assets separately.
+The Hugging Face release includes the original high-resolution object meshes.
 
 ## Metadata
 
@@ -253,20 +249,9 @@ metadata set `mirrored` to `true`; original motions set it to `false`.
 For HOI, the human BVH, object trajectory, and object-local mesh are mirrored
 together. Mirrored OBJ vertices negate local X, face winding is reversed, and
 the mirrored mesh ID appends `__mirror`; both mesh variants live once under
-`object_meshes_preview/`. See
+`object_meshes/`. See
 [docs/mirroring.md](docs/mirroring.md) for the transform and validation rules.
 
 ## Citation
 
 [CITATION_PLACEHOLDER]
-
-## Acknowledgements
-
-The simplified preview meshes were prepared with
-[PaMO](https://github.com/SarahWeiii/pamo). We thank the PaMO authors for
-open-sourcing their mesh optimization work:
-
-> Seonghun Oh, Xiaodi Yuan, Xinyue Wei, Ruoxi Shi, Fanbo Xiang, Minghua Liu,
-> and Hao Su. “PaMO: Parallel Mesh Optimization for Intersection-Free Low-Poly
-> Modeling on the GPU.” *Computer Graphics Forum* 44(7): e70267, 2025.
-> [Paper](https://doi.org/10.1111/cgf.70267)

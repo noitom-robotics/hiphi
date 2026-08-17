@@ -20,7 +20,7 @@ sequence number assigned independently within each Frame-LU in ascending
 stable release order. Numbering starts at `0001`; for example,
 `Body_movement-bob_0001`. A mirrored motion appends `__mirror` to its original
 ID. Motion-specific JSON metadata and HOI trajectories stay inside the package;
-simplified meshes are shared at repository root.
+original meshes are shared at repository root.
 
 ## 2. Path Rules
 
@@ -39,9 +39,9 @@ simplified meshes are shared at repository root.
 | --- | --- | --- | --- |
 | Human BVH | right-handed, Y-up | centimeters | Euler degrees, Z-X-Y |
 | Public object trajectory CSV | same right-handed Y-up world frame | meters | normalized quaternion, XYZW |
-| Repository-level simplified OBJ mesh | object-local frame | centimeters | posed by trajectory quaternion; mirrored variants contain reflected local geometry |
+| Repository-level original high-resolution OBJ mesh | object-local frame | centimeters | posed by trajectory quaternion; mirrored variants contain reflected local geometry |
 
-For an approved mesh vertex v_cm, trajectory translation p_m, and quaternion q:
+For a mesh vertex v_cm, trajectory translation p_m, and quaternion q:
 
 ~~~text
 v_world_m = R(q) @ (0.01 * v_cm) + p_m
@@ -118,19 +118,19 @@ archives.
 
 ## 6. Object Mesh
 
-The repository contains each canonical simplified mesh and its reflected
+The repository contains each canonical original mesh and its reflected
 counterpart once at:
 
 ~~~text
-object_meshes_preview/{mesh_id}.obj
-object_meshes_preview/{mesh_id}__mirror.obj
+object_meshes/{mesh_id}.obj
+object_meshes/{mesh_id}__mirror.obj
 ~~~
 
-Meshes use simplified Wavefront OBJ geometry. Vertices are centimeters in
-object-local coordinates. The directory contains 40 canonical files and 40
-mirrored files. `mesh_path` gives the repository-root-relative file path and
-`mesh_id` gives the stable object-asset identifier. Motion packages do not
-contain duplicated OBJ files.
+Meshes use the original high-resolution Wavefront OBJ geometry. Vertices are
+centimeters in object-local coordinates. The directory contains 40 canonical
+files and 40 mirrored files. `mesh_path` gives the repository-root-relative
+file path and `mesh_id` gives the stable object-asset identifier. Motion
+packages do not contain duplicated OBJ files.
 
 ## 7. Package metadata.json
 
@@ -155,15 +155,15 @@ Required top-level fields:
 
 Each objects entry contains object_id, object_category, trajectory_path,
 mesh_id, and mesh_path. `mesh_path` must equal
-`object_meshes_preview/{mesh_id}.obj`.
+`object_meshes/{mesh_id}.obj`.
 
 | Field | Type | Meaning |
 | --- | --- | --- |
 | object_id | string | Tracked object identifier and trajectory filename stem. |
 | object_category | string | One of the 12 broad categories: `ball`, `bench`, `bottle`, `box`, `bucket`, `chair`, `clothrack`, `mop`, `soccerball`, `stepstool`, `table`, or `trashbin`. |
 | trajectory_path | string | Package-local `object_tracks/{object_id}.csv` path. |
-| mesh_id | string | Stable simplified-mesh identifier; mirrored variants append `__mirror`. |
-| mesh_path | string | Repository-root-relative `object_meshes_preview/{mesh_id}.obj` path. |
+| mesh_id | string | Stable object-mesh identifier; mirrored variants append `__mirror`. |
+| mesh_path | string | Repository-root-relative `object_meshes/{mesh_id}.obj` path. |
 
 No `interaction_type` field is released. Interaction semantics are represented
 by `frame`, `lu`, `frame_lu`, and `text_annotation`.
@@ -231,5 +231,5 @@ reversed. With `v' = S v`, the resulting world geometry satisfies
 `R' v' + p' = S (R v + p)`. Reusing the unchanged local mesh generally breaks
 this equality for asymmetric objects. The mirrored `mesh_id` and OBJ filename
 append `__mirror`; metadata points to the shared mirrored asset under
-`object_meshes_preview/`. See [mirroring.md](mirroring.md) for the complete
+`object_meshes/`. See [mirroring.md](mirroring.md) for the complete
 procedure and validation gates.

@@ -22,7 +22,7 @@ Copy the original metadata, append `__mirror` to `motion_id`, and set the
 boolean `mirrored` field to `true`. Actor identity, annotation, timing, Frame-LU,
 and HOI classification remain unchanged. For each HOI object, append
 `__mirror` to `mesh_id` and set `mesh_path` to the corresponding
-repository-root-relative `object_meshes_preview/{mesh_id}.obj` path.
+repository-root-relative `object_meshes/{mesh_id}.obj` path.
 
 ## 2. Canonical reflection
 
@@ -71,12 +71,12 @@ Frame indices and relative timestamps remain unchanged.
 
 ## 5. Object mesh
 
-Meshes are repository-level preview assets rather than package-local copies.
+Meshes are repository-level release assets rather than package-local copies.
 The release root contains each canonical and mirrored variant once:
 
 ```text
-object_meshes_preview/{mesh_id}.obj
-object_meshes_preview/{mesh_id}__mirror.obj
+object_meshes/{mesh_id}.obj
+object_meshes/{mesh_id}__mirror.obj
 ```
 
 The local mesh must be reflected as well. For each OBJ vertex and normal:
