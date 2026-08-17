@@ -38,12 +38,12 @@
 - Spacing/layout rhythm: Wide centered sections, generous vertical breathing room, and responsive wrapping for compact controls.
 - Shape/radius/elevation: Pill links and softly elevated rounded cards using existing CSS variables.
 - Motion: Short hover transitions; no essential information depends on animation.
-- Imagery/iconography: Anonymized motion previews, technical figures, and lightweight labels; avoid adding icon dependencies for familiar resource names.
+- Imagery/iconography: Anonymized motion previews, technical figures, and lightweight labels; use the compact Hugging Face mark only where it reinforces the primary Dataset action, without adding an icon dependency.
 
 ## Components
 - Existing components to reuse: `.btn`, `.hero-actions`, navigation pills, cards, metric chips, video frames, and interactive iframe shells.
-- New/changed components: The cover gains a centered author/affiliation block and a wrapping project-resource link group using existing typography and button components.
-- Variants and states: One primary link and neutral secondary links; hover and keyboard-focus states must remain visible.
+- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group using existing typography and button components.
+- Variants and states: Dataset is the sole primary link and carries a leading Hugging Face mark; arXiv, GitHub, Online Viewer, and ModalityNet are neutral secondary links. Hover and keyboard-focus states must remain visible.
 - Token/component ownership: Shared full-page components live in `static/css/hiphi.css`; simplified-page equivalents live in `static/css/simple.css`.
 
 ## Accessibility
@@ -55,7 +55,7 @@
 
 ## Responsive behavior
 - Supported breakpoints/devices: Modern desktop and mobile browsers; existing breakpoints at 1180/1100px and below remain authoritative.
-- Layout adaptations: Resource buttons wrap and remain centered instead of shrinking labels or overflowing.
+- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout.
 - Touch/hover differences: Pill links keep a minimum touch height; hover effects are decorative only.
 
 ## Interaction states

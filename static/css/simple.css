@@ -121,9 +121,9 @@ a { color: inherit; text-decoration: none; }
 .paper-byline p { margin: 0; }
 .author-list {
   color: var(--ink);
-  font-size: clamp(.94rem, .92vw, 1.1rem);
-  line-height: 1.72;
-  font-weight: 760;
+  font-size: clamp(1.06rem, 1.12vw, 1.34rem);
+  line-height: 1.66;
+  font-weight: 780;
 }
 .affiliation-list,
 .author-notes {
@@ -165,6 +165,7 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(104,44,98,.12); }
 .btn:focus-visible { outline: 3px solid rgba(176,68,244,.34); outline-offset: 3px; }
 .btn.primary { color: white; background: linear-gradient(135deg, var(--purple), var(--rose)); border-color: transparent; }
+.btn-icon { display: inline-flex; margin-right: .48rem; font-size: 1.08em; line-height: 1; }
 .simple-section {
   width: min(84vw, var(--max));
   margin: 0 auto;
@@ -346,6 +347,6 @@ a { color: inherit; text-decoration: none; }
   }
   .hero-actions .btn { width: 100%; min-width: 0; }
   .hero-actions .btn:last-child { grid-column: 1 / -1; width: calc(50% - .3rem); justify-self: center; }
-  .author-list { max-width: 100%; font-size: .86rem; line-height: 1.62; overflow-wrap: anywhere; }
+  .author-list { max-width: 100%; font-size: .95rem; line-height: 1.62; overflow-wrap: anywhere; }
   .affiliation-list { gap: .32rem .7rem; font-size: .74rem; }
 }

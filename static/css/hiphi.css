@@ -73,6 +73,7 @@ h3 { font-size: 1.24rem; }
 .btn:focus-visible { outline: 3px solid rgba(176,68,244,.34); outline-offset: 3px; }
 .btn.primary { color: white; background: linear-gradient(135deg, var(--purple), var(--pink)); border-color: transparent; }
 .btn.muted { color: var(--muted); background: rgba(255,255,255,.68); }
+.btn-icon { display: inline-flex; margin-right: .48rem; font-size: 1.08em; line-height: 1; }
 .project-links { width: min(980px, calc(100vw - 2rem)); justify-content: center; }
 .project-links .btn { min-width: 7.4rem; }
 .stat-ribbon { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .75rem; margin-top: 1.5rem; }
@@ -593,9 +594,9 @@ th, td { padding: .62rem .55rem; }
 .paper-byline p { margin: 0; }
 .author-list {
   color: var(--ink);
-  font-size: clamp(.94rem, .92vw, 1.1rem);
-  line-height: 1.72;
-  font-weight: 760;
+  font-size: clamp(1.06rem, 1.12vw, 1.34rem);
+  line-height: 1.66;
+  font-weight: 780;
 }
 .affiliation-list,
 .author-notes {
@@ -1505,7 +1506,7 @@ th, td { padding: .62rem .55rem; }
   .project-links .btn { width: 100%; min-width: 0; }
   .project-links .btn:last-child { grid-column: 1 / -1; width: calc(50% - .3rem); justify-self: center; }
   .paper-byline { gap: .75rem; }
-  .author-list { max-width: 100%; font-size: .86rem; line-height: 1.62; overflow-wrap: anywhere; }
+  .author-list { max-width: 100%; font-size: .95rem; line-height: 1.62; overflow-wrap: anywhere; }
   .affiliation-list { gap: .32rem .7rem; font-size: .74rem; }
   .release-format-list { grid-template-columns: 1fr; }
 }
