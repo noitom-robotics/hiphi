@@ -10,6 +10,8 @@ access is required.
 
 from __future__ import annotations
 
+import csv
+import hmac
 import json
 import os
 import posixpath
@@ -18,6 +20,8 @@ from dataclasses import dataclass
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
+
+from .service import STOP_TOKEN_HEADER
 
 WEB_ROOT = Path(__file__).resolve().parent.parent / "web"
 
@@ -65,6 +69,10 @@ class Source:
     def mode(self) -> str:
         return "single" if self.single_file else "dataset"
 
+    @property
+    def path(self) -> Path:
+        return self.root / self.single_file if self.single_file else self.root
+
 
 class SourceState:
     """The active source, swappable at runtime by the UI's path box."""
@@ -72,7 +80,8 @@ class SourceState:
     def __init__(self, source: Source) -> None:
         self._lock = threading.Lock()
         self._source = source
-        self._tree_cache: list[dict[str, str]] | None = None
+        self._tree_cache: list[dict[str, object]] | None = None
+        self._generation = 0
 
     @property
     def source(self) -> Source:
@@ -83,25 +92,30 @@ class SourceState:
         with self._lock:
             self._source = source
             self._tree_cache = None
+            self._generation += 1
 
-    def tree(self) -> list[dict[str, str]]:
+    def tree(self) -> list[dict[str, object]]:
         """Motion packages present on disk, as ``{frame, lu, motionId}`` rows.
 
         Built by scanning ``data/{frame}/{lu}/{motion_id}/`` rather than by
         reading the release index, so a partial download lists exactly what the
         user extracted. Cached until the source changes.
         """
-        with self._lock:
-            if self._tree_cache is not None:
-                return self._tree_cache
-            root = self._source.root
-        rows = scan_motions(root)
-        with self._lock:
-            self._tree_cache = rows
-        return rows
+        while True:
+            with self._lock:
+                if self._tree_cache is not None:
+                    return self._tree_cache
+                root = self._source.root
+                generation = self._generation
+            rows = scan_motions(root)
+            with self._lock:
+                if generation != self._generation:
+                    continue
+                self._tree_cache = rows
+                return rows
 
 
-def scan_motions(root: Path) -> list[dict[str, str]]:
+def scan_motions(root: Path) -> list[dict[str, object]]:
     """Scans ``root/data`` three levels deep for motion packages.
 
     A directory counts as a motion only if it contains ``motion_actor.bvh``,
@@ -110,7 +124,8 @@ def scan_motions(root: Path) -> list[dict[str, str]]:
     data_dir = root / "data"
     if not data_dir.is_dir():
         return []
-    rows: list[dict[str, str]] = []
+    release_metadata = _read_release_metadata(root / "metadata" / "hiphi_metadata.csv")
+    rows: list[dict[str, object]] = []
     for frame_entry in sorted(os.scandir(data_dir), key=lambda e: e.name):
         if not frame_entry.is_dir():
             continue
@@ -122,14 +137,99 @@ def scan_motions(root: Path) -> list[dict[str, str]]:
                     continue
                 if not os.path.isfile(os.path.join(motion_entry.path, "motion_actor.bvh")):
                     continue
-                rows.append(
-                    {
-                        "frame": frame_entry.name,
-                        "lu": lu_entry.name,
-                        "motionId": motion_entry.name,
-                    }
-                )
+                row: dict[str, object] = {
+                    "frame": frame_entry.name,
+                    "lu": lu_entry.name,
+                    "motionId": motion_entry.name,
+                }
+                search_metadata = release_metadata.get(motion_entry.name)
+                if search_metadata is None:
+                    search_metadata = _read_search_metadata(Path(motion_entry.path) / "metadata.json")
+                elif search_metadata.get("isHoi"):
+                    # The release index has object categories but not instance
+                    # IDs. Only HOI packages need one small local read to add
+                    # IDs such as "Trashbin_C_1" to catalog search.
+                    local = _read_search_metadata(Path(motion_entry.path) / "metadata.json")
+                    search_metadata = dict(search_metadata)
+                    search_metadata["objectIds"] = local.get("objectIds", [])
+                    if not search_metadata.get("objectCategories"):
+                        search_metadata["objectCategories"] = local.get("objectCategories", [])
+                row.update(search_metadata)
+                rows.append(row)
     return rows
+
+
+def _read_release_metadata(path: Path) -> dict[str, dict[str, object]]:
+    """Reads the optional release index into the catalog's presentation shape."""
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            rows = csv.DictReader(fh)
+            result: dict[str, dict[str, object]] = {}
+            for raw in rows:
+                motion_id = str(raw.get("motion_id") or "")
+                if not motion_id:
+                    continue
+                category = str(raw.get("object_categories") or "")
+                result[motion_id] = {
+                    "durationSec": _number(raw.get("duration_sec"), float),
+                    "frameCount": _number(raw.get("frame_count"), int),
+                    "actorId": str(raw.get("actor_id") or ""),
+                    "textAnnotation": str(raw.get("text_annotation") or ""),
+                    "isHoi": str(raw.get("is_hoi") or "").lower() == "true",
+                    "mirrored": str(raw.get("mirrored") or "").lower() == "true",
+                    "objectIds": [],
+                    "objectCategories": [category] if category else [],
+                }
+            return result
+    except (OSError, ValueError, csv.Error):
+        return {}
+
+
+def _number(value: str | None, convert: type[int] | type[float]) -> int | float:
+    if value is None:
+        return convert(0)
+    try:
+        return convert(value)
+    except (TypeError, ValueError):
+        return convert(0)
+
+
+def _read_search_metadata(path: Path) -> dict[str, object]:
+    """Reads the small semantic subset needed to search a motion catalog.
+
+    Motion metadata is optional: a missing or malformed file never removes a
+    playable BVH from the tree. The enriched tree is cached by ``SourceState``,
+    avoiding one browser request per motion when the release-wide CSV is absent.
+    """
+    try:
+        metadata = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(metadata, dict):
+        return {}
+
+    objects = metadata.get("objects")
+    if not isinstance(objects, list):
+        objects = []
+
+    object_ids: list[str] = []
+    object_categories: list[str] = []
+    for obj in objects:
+        if not isinstance(obj, dict):
+            continue
+        object_id = obj.get("object_id")
+        category = obj.get("object_category")
+        if object_id is not None and str(object_id):
+            object_ids.append(str(object_id))
+        if category is not None and str(category):
+            object_categories.append(str(category))
+
+    return {
+        "actorId": str(metadata.get("actor_id") or ""),
+        "textAnnotation": str(metadata.get("text_annotation") or ""),
+        "objectIds": object_ids,
+        "objectCategories": list(dict.fromkeys(object_categories)),
+    }
 
 
 def resolve_source(raw_path: str) -> Source:
@@ -151,7 +251,7 @@ def resolve_source(raw_path: str) -> Source:
     target = Path(cleaned).expanduser()
     try:
         target = target.resolve(strict=True)
-    except (OSError, FileNotFoundError) as exc:
+    except OSError as exc:
         raise ValueError(f"Path not found: {cleaned}") from exc
 
     if target.is_file():
@@ -175,6 +275,7 @@ class ViewerRequestHandler(SimpleHTTPRequestHandler):
     """Routes ``/api/*``, ``/dataset/*``, and the viewer's static files."""
 
     state: SourceState  # injected by make_server
+    stop_token: str | None = None
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, directory=str(WEB_ROOT), **kwargs)
@@ -191,7 +292,7 @@ class ViewerRequestHandler(SimpleHTTPRequestHandler):
             self._send_json(
                 {
                     "mode": source.mode,
-                    "root": str(source.root if not source.single_file else source.root / source.single_file),
+                    "root": str(source.path),
                     "single": {"name": source.single_file} if source.single_file else None,
                 }
             )
@@ -205,21 +306,33 @@ class ViewerRequestHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self) -> None:  # noqa: N802 - name fixed by the stdlib base class
-        if urlparse(self.path).path != "/api/open":
+        path = urlparse(self.path).path
+        if path == "/api/stop":
+            supplied_token = self.headers.get(STOP_TOKEN_HEADER, "")
+            if not self.stop_token or not hmac.compare_digest(supplied_token, self.stop_token):
+                self._send_json({"error": "Invalid stop token."}, status=403)
+                return
+            self._send_json({"ok": True})
+            threading.Thread(target=self.server.shutdown, daemon=True).start()
+            return
+        if path != "/api/open":
             self.send_error(404)
             return
-        length = int(self.headers.get("Content-Length") or 0)
         try:
+            length = int(self.headers.get("Content-Length") or 0)
             payload = json.loads(self.rfile.read(length) or b"{}")
+            if not isinstance(payload, dict):
+                raise ValueError
+        except ValueError:
+            self._send_json({"error": "Malformed request."}, status=400)
+            return
+        try:
             source = resolve_source(str(payload.get("path", "")))
         except ValueError as exc:
             self._send_json({"error": str(exc)}, status=400)
             return
-        except json.JSONDecodeError:
-            self._send_json({"error": "Malformed request."}, status=400)
-            return
         self.state.replace(source)
-        save_recent_path(Path(payload.get("path", "")).expanduser())
+        save_recent_path(source.path)
         print(f"  now serving: {source.root}")
         self._send_json({"ok": True})
 
@@ -282,18 +395,23 @@ class ViewerRequestHandler(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
 
-def make_server(source: Source, port: int) -> ThreadingHTTPServer:
+def make_server(source: Source, port: int, stop_token: str | None = None) -> ThreadingHTTPServer:
     """Builds the HTTP server bound to localhost only.
 
     Args:
         source: The dataset or single file to serve.
         port: TCP port; 0 picks a free one.
+        stop_token: Secret required by the local stop endpoint, or None to disable it.
 
     Returns:
         An unstarted ThreadingHTTPServer.
     """
     state = SourceState(source)
-    handler = type("BoundViewerHandler", (ViewerRequestHandler,), {"state": state})
+    handler = type(
+        "BoundViewerHandler",
+        (ViewerRequestHandler,),
+        {"state": state, "stop_token": stop_token},
+    )
     # 127.0.0.1 rather than 0.0.0.0: the dataset is the user's local data and
     # should not be reachable from the rest of the network.
     return ThreadingHTTPServer(("127.0.0.1", port), handler)

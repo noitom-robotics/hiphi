@@ -3,7 +3,7 @@
 # terminal on Linux. Pass a folder or .bvh path as an argument to open it
 # directly.
 #
-# On macOS the first run may need: chmod +x "Start Viewer (Mac-Linux).command"
+# On macOS the first run may need: chmod +x start-viewer.command
 
 cd "$(dirname "$0")" || exit 1
 

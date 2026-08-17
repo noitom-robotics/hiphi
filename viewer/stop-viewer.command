@@ -5,24 +5,17 @@
 # Pass a port number to stop a viewer started with --port, e.g.
 #     ./stop-viewer.command 9000
 
+cd "$(dirname "$0")" || exit 1
+
 PORT="${1:-8666}"
 
-if command -v lsof >/dev/null 2>&1; then
-    PIDS=$(lsof -ti "tcp:$PORT" 2>/dev/null)
-elif command -v fuser >/dev/null 2>&1; then
-    PIDS=$(fuser "$PORT/tcp" 2>/dev/null)
+if command -v python3 >/dev/null 2>&1; then
+    PYTHON=python3
+elif command -v python >/dev/null 2>&1; then
+    PYTHON=python
 else
-    echo "Need lsof or fuser to find the viewer process."
+    echo "Python was not found on this computer."
     exit 1
 fi
 
-if [ -z "$PIDS" ]; then
-    echo "Nothing is listening on port $PORT - the viewer is not running."
-else
-    echo "Stopping process(es): $PIDS"
-    # SIGTERM first so the server closes its socket cleanly.
-    kill $PIDS 2>/dev/null
-    sleep 1
-    kill -9 $PIDS 2>/dev/null
-    echo "Viewer stopped."
-fi
+"$PYTHON" -m hiphi_motion_viewer.stop "$PORT"

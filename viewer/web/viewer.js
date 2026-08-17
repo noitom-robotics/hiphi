@@ -15,6 +15,7 @@ import { SkeletonMeshSet, addActorSkeletonLights } from './skeleton-style.js'
 import { createReferenceGrid } from './scene-chrome.js'
 import { parseObjectTrack, sampleTrackIndex } from './object-track.js'
 import { buildOrientationGizmo, renderOrientationGizmo } from './gizmo.js'
+import { frameCounterText } from './motion-presenter.js'
 
 /** Elapsed-portion fill for the scrubber. */
 const SCRUB_GRADIENT =
@@ -25,7 +26,6 @@ const CM_TO_M = 0.01
 
 const ICON_SKELETON = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>'
 const ICON_FOCUS = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>'
-const ICON_LABEL = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
 const ICON_PAUSE = '<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="3.5" height="10" rx="1"/><rect x="7.5" y="1" width="3.5" height="10" rx="1"/></svg>'
 const ICON_PLAY = '<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2.5 1.2v9.6c0 .9 1 1.5 1.8 1L11 7c.8-.5.8-1.6 0-2.1L4.3.2c-.8-.5-1.8.1-1.8 1z"/></svg>'
 
@@ -37,15 +37,16 @@ export class MotionViewer {
     this.time = 0
     this.follow = false
     this.showSkeleton = true
-    this.showLabels = true
     this.duration = 0
     this.frameTime = 1 / 90
     this.frameCount = 0
+    this.frameIndex = 0
     this.loadedObjects = []
     this.loadToken = 0
     this.disposed = false
 
     this.#buildDom()
+    this.#bindKeyboard()
     this.#buildScene()
     this.#startLoop()
   }
@@ -54,28 +55,27 @@ export class MotionViewer {
     this.container.classList.add('viewer-root')
     this.container.innerHTML = `
       <div class="viewer-canvas"></div>
-      <div class="viewer-annotation" hidden></div>
       <div class="viewer-status" hidden></div>
       <div class="transport">
         <div class="transport-row">
           <div class="transport-buttons">
             <button class="icon-btn is-on" data-act="skeleton" title="Show skeleton" aria-label="Show skeleton">${ICON_SKELETON}</button>
             <button class="icon-btn" data-act="follow" title="Follow character" aria-label="Follow character">${ICON_FOCUS}</button>
-            <button class="icon-btn is-on" data-act="labels" title="Show annotation" aria-label="Show annotation">${ICON_LABEL}</button>
-            <button class="play-btn" data-act="play" aria-label="Pause">${ICON_PAUSE}</button>
+            <button class="play-btn" data-act="play" aria-label="Pause" aria-keyshortcuts="Space">${ICON_PAUSE}</button>
           </div>
           <div class="scrub">
             <div class="scrub-rail"></div>
             <div class="scrub-fill"></div>
             <div class="scrub-thumb"></div>
-            <input class="scrub-input" type="range" min="0" max="0.001" step="0.001" value="0" aria-label="Timeline">
+            <input class="scrub-input" type="range" min="0" max="0.001" step="any" value="0"
+                   title="Left/Right: one frame; Shift+Left/Right: ten frames"
+                   aria-label="Timeline" aria-keyshortcuts="ArrowLeft ArrowRight Shift+ArrowLeft Shift+ArrowRight">
           </div>
           <span class="frame-counter">0 / 0</span>
         </div>
       </div>
     `
     this.mount = this.container.querySelector('.viewer-canvas')
-    this.annotationEl = this.container.querySelector('.viewer-annotation')
     this.statusEl = this.container.querySelector('.viewer-status')
     this.fillEl = this.container.querySelector('.scrub-fill')
     this.thumbEl = this.container.querySelector('.scrub-thumb')
@@ -92,11 +92,6 @@ export class MotionViewer {
       this.follow = !this.follow
       e.currentTarget.classList.toggle('is-on', this.follow)
     })
-    this.container.querySelector('[data-act="labels"]').addEventListener('click', e => {
-      this.showLabels = !this.showLabels
-      e.currentTarget.classList.toggle('is-on', this.showLabels)
-      this.#syncAnnotation()
-    })
     this.playBtn.addEventListener('click', () => this.#togglePlay())
     this.inputEl.addEventListener('input', e => {
       this.playing = false
@@ -104,6 +99,31 @@ export class MotionViewer {
       this.#applyTime(Number(e.target.value))
       this.#syncScrub()
     })
+  }
+
+  #bindKeyboard() {
+    this.keydownHandler = event => {
+      if (event.defaultPrevented || event.ctrlKey || event.altKey || event.metaKey) return
+      const target = event.target
+      const tag = target?.tagName
+      const editsText = target !== this.inputEl && (
+        target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(tag)
+      )
+      if (editsText) return
+
+      if (event.code === 'Space') {
+        if (event.repeat) return
+        event.preventDefault()
+        this.#togglePlay()
+      } else if (event.code === 'ArrowLeft') {
+        event.preventDefault()
+        this.#stepFrames(event.shiftKey ? -10 : -1)
+      } else if (event.code === 'ArrowRight') {
+        event.preventDefault()
+        this.#stepFrames(event.shiftKey ? 10 : 1)
+      }
+    }
+    window.addEventListener('keydown', this.keydownHandler)
   }
 
   #buildScene() {
@@ -131,6 +151,7 @@ export class MotionViewer {
     this.controls = controls
     this.gizmo = buildOrientationGizmo()
     this.gizmoSize = new THREE.Vector2()
+    this.followTarget = new THREE.Vector3()
 
     const resize = () => {
       const w = this.mount.clientWidth
@@ -164,9 +185,8 @@ export class MotionViewer {
       // Follow mode: ease the orbit target toward the actor's hips so the
       // camera tracks locomotion without hard cuts.
       if (this.follow && this.bones?.[0]) {
-        const hip = new THREE.Vector3()
-        this.bones[0].getWorldPosition(hip)
-        this.controls.target.lerp(hip, 0.08)
+        this.bones[0].getWorldPosition(this.followTarget)
+        this.controls.target.lerp(this.followTarget, 0.08)
       }
       this.controls.update()
       this.renderer.getSize(this.gizmoSize)
@@ -182,14 +202,11 @@ export class MotionViewer {
    * supersedes an in-flight earlier one.
    *
    * @param {{bvhUrl: string,
-   *          objects?: Array<{objectId: string, meshUrl: string, trackUrl: string}>,
-   *          annotation?: string}} motion
+   *          objects?: Array<{objectId: string, meshUrl: string, trackUrl: string}>}} motion
    */
   async load(motion) {
     const token = ++this.loadToken
     this.#clearMotion()
-    this.annotation = motion.annotation ?? ''
-    this.#syncAnnotation()
     this.#setStatus('Loading motion...')
 
     try {
@@ -209,12 +226,13 @@ export class MotionViewer {
 
       const bones = bvh.skeleton.bones
 
+      const boneIndices = new Map(bones.map((bone, index) => [bone, index]))
       const bonePairs = []
       bones.forEach((bone, i) => {
         const parent = bone.parent
         if (parent instanceof THREE.Bone) {
-          const pi = bones.indexOf(parent)
-          if (pi >= 0) bonePairs.push([i, pi])
+          const pi = boneIndices.get(parent)
+          if (pi !== undefined) bonePairs.push([i, pi])
         }
       })
 
@@ -238,13 +256,19 @@ export class MotionViewer {
         frames = Math.max(frames, track.times.length)
       }
 
-      this.boneTracks = boneTracks
-      this.rootBoneName = rootBone.name
+      this.poseTracks = bones.map(bone => {
+        const track = boneTracks.get(bone.name)
+        if (!track) return null
+        return {
+          positions: bone === rootBone ? track.positions : undefined,
+          quaternions: track.quaternions,
+        }
+      })
       this.frameCount = frames
       this.skeletonRoot = root
       this.bones = bones
-      this.duration = bvh.clip.duration
       this.frameTime = frames > 1 ? bvh.clip.duration / (frames - 1) : 1 / 90
+      this.duration = frames > 0 ? frames * this.frameTime : 0
 
       // Ground + recenter: pose frame 0, then shift the WHOLE capture world
       // (skeleton and objects share it) so the actor's feet stand on the grid
@@ -278,13 +302,16 @@ export class MotionViewer {
 
       // Objects (HOI motions only). One failing object must not blank the
       // whole motion, so each is loaded independently and reported inline.
-      const objMaterial = new THREE.MeshStandardMaterial({
-        color: 0x9aa0b0, roughness: 0.6, metalness: 0.1,
-        transparent: true, opacity: 0.92,
-      })
+      const objects = motion.objects ?? []
+      const objMaterial = objects.length > 0
+        ? new THREE.MeshStandardMaterial({
+          color: 0x9aa0b0, roughness: 0.6, metalness: 0.1,
+          transparent: true, opacity: 0.92,
+        })
+        : null
       this.objectMaterial = objMaterial
       const failures = []
-      await Promise.all((motion.objects ?? []).map(async o => {
+      await Promise.all(objects.map(async o => {
         try {
           const [objText, csvText] = await Promise.all([fetchText(o.meshUrl), fetchText(o.trackUrl)])
           if (token !== this.loadToken || this.disposed) return
@@ -295,7 +322,7 @@ export class MotionViewer {
           mesh.scale.setScalar(CM_TO_M)
           // Objects join the shared world group so grounding/recentering moves
           // them with the skeleton.
-          ;(this.world ?? this.scene).add(mesh)
+          world.add(mesh)
           this.loadedObjects.push({ mesh, track: parseObjectTrack(csvText) })
         } catch (err) {
           console.error(`[viewer] object "${o.objectId}" failed:`, err)
@@ -330,11 +357,12 @@ export class MotionViewer {
     this.objectMaterial?.dispose()
     this.objectMaterial = undefined
     this.loadedObjects = []
-    this.boneTracks = undefined
+    this.poseTracks = undefined
     this.bones = undefined
     this.skeletonRoot = undefined
     this.duration = 0
     this.frameCount = 0
+    this.frameIndex = 0
     this.time = 0
   }
 
@@ -345,15 +373,17 @@ export class MotionViewer {
     // guarantees exactly one track row per BVH frame, so index-locking the two
     // eliminates any possibility of relative drift.
     const frameIdx = Math.min(
-      Math.max(0, Math.round(t / this.frameTime)),
+      Math.max(0, Math.floor(t / this.frameTime)),
       Math.max(0, this.frameCount - 1)
     )
+    this.frameIndex = frameIdx
 
-    if (this.boneTracks && this.bones) {
-      for (const bone of this.bones) {
-        const track = this.boneTracks.get(bone.name)
+    if (this.poseTracks && this.bones) {
+      for (let i = 0; i < this.bones.length; i++) {
+        const bone = this.bones[i]
+        const track = this.poseTracks[i]
         if (!track) continue
-        if (track.positions && bone.name === this.rootBoneName) {
+        if (track.positions) {
           bone.position.set(
             track.positions[frameIdx * 3],
             track.positions[frameIdx * 3 + 1],
@@ -400,8 +430,18 @@ export class MotionViewer {
   }
 
   #togglePlay() {
+    if (this.frameCount <= 0) return
     this.playing = !this.playing
     this.#syncPlayButton()
+  }
+
+  #stepFrames(delta) {
+    if (this.frameCount <= 0) return
+    this.playing = false
+    const next = Math.min(Math.max(0, this.frameIndex + delta), this.frameCount - 1)
+    this.#applyTime(next * this.frameTime)
+    this.#syncPlayButton()
+    this.#syncScrub()
   }
 
   #syncPlayButton() {
@@ -419,15 +459,7 @@ export class MotionViewer {
     this.thumbEl.style.left = `${pct}%`
     this.inputEl.max = String(this.duration || 0.001)
     this.inputEl.value = String(this.time)
-    const total = this.duration > 0 ? Math.round(this.duration / this.frameTime) : 0
-    const frame = this.duration > 0 ? Math.min(Math.floor(this.time / this.frameTime), total) : 0
-    this.counterEl.textContent = `${frame} / ${total}`
-  }
-
-  #syncAnnotation() {
-    const show = !!this.annotation && this.showLabels
-    this.annotationEl.hidden = !show
-    this.annotationEl.textContent = this.annotation ?? ''
+    this.counterEl.textContent = frameCounterText(this.frameIndex, this.frameCount)
   }
 
   #setStatus(text) {
@@ -438,6 +470,7 @@ export class MotionViewer {
   dispose() {
     this.disposed = true
     cancelAnimationFrame(this.raf)
+    window.removeEventListener('keydown', this.keydownHandler)
     this.resizeObserver?.disconnect()
     this.#clearMotion()
     this.controls?.dispose()

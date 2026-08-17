@@ -14,7 +14,7 @@ needs no internet connection after you have downloaded the dataset.
 - A modern browser (Chrome, Edge, Firefox, or Safari)
 
 There is no build step. The web assets are plain ES modules and three.js is
-included in `web/vendor/`, so there is no Node.js or npm involved.
+included in `web/vendor/`, so Node.js and npm are not needed to run the viewer.
 
 ## What is in this folder
 
@@ -46,25 +46,18 @@ hf auth login
 hf download noitomrobotics/HiPHI --repo-type dataset --local-dir ./HiPHI
 ```
 
-If your install predates huggingface_hub v1.0, the command was named
-`huggingface-cli` instead of `hf` (and sign-in was `huggingface-cli login`).
-The arguments are the same.
+If an older install does not recognize `hf`, the command was named
+`huggingface-cli` instead (and sign-in was `huggingface-cli login`). The
+arguments are the same.
 
-**2. Extract the archives.** The motion data ships as `.tar.zst` archives under
-`data/`:
+**2. Extract the archives.** The motion data ships as 32 `.tar.zst` files.
+Extract them in place, so the motion folders land under `HiPHI/data/`:
 
 ```bash
-cd HiPHI && for f in data/*.tar.zst; do tar --use-compress-program=unzstd --strip-components=1 -xf "$f"; done
+cd HiPHI && for f in data/*.tar.zst; do tar --use-compress-program=unzstd -xf "$f"; done
 ```
 
-`--strip-components=1` matters. Archive members are stored with a leading
-`HiPHI/`, so without it you get `HiPHI/HiPHI/data/...` instead of
-`HiPHI/data/...`.
-
-You do not need every archive. The viewer lists whatever you have extracted, so
-a single archive is enough to try things out. Each one holds complete motion
-packages, and `data/motion_to_part.csv` maps each motion to the archive that
-contains it.
+You do not need all 32. The viewer lists whatever you have extracted.
 
 **3. Start the viewer.** No terminal needed — just double-click:
 
@@ -104,6 +97,7 @@ stored in `~/.hiphi_motion_viewer.json`; delete that file to forget it.
   Right-click `start-viewer.command` and choose **Open**, then confirm. If it
   still will not run, open Terminal once and run
   `chmod +x start-viewer.command`.
+
 ## Stopping the viewer
 
 A small terminal window stays open while the viewer runs. Closing that window
@@ -124,9 +118,12 @@ If you started it on a different port, pass that port:
 
 ```bash
 stop-viewer.bat 9000
+./stop-viewer.command 9000
 ```
 
-The stop script says so plainly when nothing is running, so it is safe to run
+The launcher sends an authenticated request to the viewer instance registered
+on that port; it does not kill arbitrary processes that happen to use the same
+port. It also says so plainly when no viewer is registered, so it is safe to run
 at any time.
 
 ## Using it from a terminal
@@ -154,15 +151,26 @@ Options:
 ## In the viewer
 
 The left rail lists motions grouped by **Frame**, then by **LU**. Click to
-expand. The search box matches motion IDs, Frame and LU names, actor IDs, and
-annotation text; searching flattens the tree to matching motions.
+expand. The search box matches motion IDs, Frame and LU names, actor IDs,
+descriptions, object IDs, and object categories; searching flattens the tree to
+matching motions. This search also works for partial downloads that do not have
+the release-wide metadata CSV.
 
-Below the list, the metadata panel shows the selected motion's duration, frame
-count, performer details, and its objects for HOI motions.
+Below the list, the metadata panel shows the selected motion's description,
+duration, frame count, performer details, and its objects for HOI motions.
 
 The player has orbit controls (drag to rotate, scroll to zoom) and a transport
-bar with play/pause, a timeline scrubber, and three toggles: show skeleton,
-follow the character, and show the annotation caption.
+bar with play/pause, a timeline scrubber, and toggles for showing the skeleton
+and following the character. The frame counter is one-based, matching the frame
+count shown in metadata.
+
+Keyboard shortcuts work whenever you are not typing in a field:
+
+| Key | Action |
+| --- | --- |
+| `Space` | Play or pause |
+| `Left` / `Right` | Step backward or forward one frame |
+| `Shift+Left` / `Shift+Right` | Step backward or forward ten frames |
 
 The three dividers between panels can be dragged to resize.
 
@@ -172,8 +180,10 @@ The motion list is built by scanning `data/` on disk, not by reading the
 release index. If you extracted only a few archives, only those motions are
 listed. Nothing appears that you cannot actually play.
 
-If `metadata/hiphi_metadata.csv` is present it is used to add durations and to
-make annotation text searchable, but it is entirely optional.
+When `metadata/hiphi_metadata.csv` is present, it supplies the release-wide
+search metadata. Otherwise the viewer reads each motion's `metadata.json`.
+For HOI motions it also reads the local file to include object instance IDs.
+The release-wide CSV is entirely optional.
 
 ## Expected data layout
 

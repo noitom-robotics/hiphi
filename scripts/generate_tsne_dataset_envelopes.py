@@ -28,20 +28,20 @@ PAPER_SAMPLE = (
 PAPER_METRICS = PAPER_ROOT / "outputs" / "envelope_comparison.json"
 
 COLORS = {
-    "HiPHI-MoCap": "#B98AD9",
+    "HiPHI": "#B98AD9",
     "BONES-SEED-SOMA": "#5E88BF",
     "AMASS": "#6FA886",
     "Motion-X++": "#D49A62",
     "LaFAN1": "#D46F6C",
 }
 DISPLAY_NAMES = {
-    "HiPHI-MoCap": "HiPHI (ours)",
+    "HiPHI": "HiPHI (ours)",
     "BONES-SEED-SOMA": "BONES-SEED",
     "AMASS": "AMASS",
     "Motion-X++": "Motion-X++",
     "LaFAN1": "LaFAN1",
 }
-DRAW_ORDER = ["HiPHI-MoCap", "BONES-SEED-SOMA", "AMASS", "Motion-X++", "LaFAN1"]
+DRAW_ORDER = ["HiPHI", "BONES-SEED-SOMA", "AMASS", "Motion-X++", "LaFAN1"]
 
 
 def extract_payload(html: str) -> dict:
@@ -181,7 +181,7 @@ def main() -> None:
         "source": source,
         "grid": args.grid,
         "note": note,
-        "default_visible": ["HiPHI-MoCap", "BONES-SEED-SOMA"],
+        "default_visible": ["HiPHI", "BONES-SEED-SOMA"],
         "datasets": json_datasets,
         "long_tail_stats": long_tail_stats,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

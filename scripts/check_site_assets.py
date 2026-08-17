@@ -23,7 +23,7 @@ REFERENCE_ATTRS = {"src", "href", "poster", "data-src"}
 IGNORED_SCHEMES = {"http", "https", "mailto", "tel"}
 BLOCKED_SCHEMES = {"javascript", "data", "file"}
 FORBIDDEN_REGEXES = [
-    ("local absolute path", re.compile(r"/(?:home|mnt|Users|private|var/folders|tmp)/[A-Za-z0-9_.\-/]+|/data_[A-Za-z0-9_.\-/]+")),
+    ("local absolute path", re.compile(r"/(?:home|mnt|Users|private|var/folders|tmp)/[A-Za-z0-9_.\-/]+|(?<![\w.-])/data_[A-Za-z0-9_.\-/]+")),
     ("windows absolute path", re.compile(r"[A-Za-z]:\\\\")),
     ("private IPv4 address", re.compile(r"\b(?:10|172\.(?:1[6-9]|2\d|3[0-1])|192\.168)\.[0-9]{1,3}\.[0-9]{1,3}(?:\.[0-9]{1,3})?\b")),
     ("credential-looking password assignment", re.compile(r"(?i)(?:password|passwd|pwd)\s*[:=]\s*[\'\"]?[^\s,;\'\"]+")),

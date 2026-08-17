@@ -3,7 +3,6 @@
  *
  * The release tree is:
  *
- *     metadata/hiphi_metadata.csv        (optional; enriches the list)
  *     object_meshes_preview/{mesh_id}.obj
  *     data/{frame}/{lu}/{motion_id}/motion_actor.bvh
  *     data/{frame}/{lu}/{motion_id}/metadata.json
@@ -44,11 +43,6 @@ export function datasetRelativeUrl(relPath) {
   return `${DATASET_BASE}/${encodePath(relPath)}`
 }
 
-/** The release-wide motion index, when the download includes it. */
-export function indexCsvUrl() {
-  return `${DATASET_BASE}/metadata/hiphi_metadata.csv`
-}
-
 /**
  * Builds the viewer's object list from a motion's metadata.json, applying the
  * correct base to each path.
@@ -59,7 +53,10 @@ export function indexCsvUrl() {
  * @param {{objects?: Array<object>}} meta
  */
 export function viewerObjectsFrom(frame, lu, motionId, meta) {
-  return (meta?.objects ?? []).map(o => ({
+  const objects = Array.isArray(meta?.objects)
+    ? meta.objects.filter(object => object && typeof object === 'object' && !Array.isArray(object))
+    : []
+  return objects.map(o => ({
     objectId: o.object_id ?? o.mesh_id ?? 'object',
     meshUrl: o.mesh_path
       ? datasetRelativeUrl(o.mesh_path)

@@ -933,11 +933,11 @@ function renderTsneEnvelope(data) {
   const controls = $('[data-tsne-envelope-controls]', host || document);
   if (!host || !canvas || !controls || !data?.datasets?.length) return;
 
-  const desired = ['HiPHI-MoCap', 'BONES-SEED-SOMA', 'AMASS', 'Motion-X++', 'LaFAN1'];
+  const desired = ['HiPHI', 'BONES-SEED-SOMA', 'AMASS', 'Motion-X++', 'LaFAN1'];
   const byName = new Map(data.datasets.map(ds => [ds.name, ds]));
   const datasets = desired.map(name => byName.get(name)).filter(Boolean)
     .concat(data.datasets.filter(ds => !desired.includes(ds.name)));
-  const defaults = new Set(data.default_visible?.length ? data.default_visible : ['HiPHI-MoCap', 'BONES-SEED-SOMA']);
+  const defaults = new Set(data.default_visible?.length ? data.default_visible : ['HiPHI', 'BONES-SEED-SOMA']);
   const visible = new Set(datasets.filter(ds => defaults.has(ds.name)).map(ds => ds.name));
   const grid = data.grid || 55;
   const ctx = canvas.getContext('2d');
@@ -1054,7 +1054,7 @@ function renderTsneTailViz(data) {
   if (!host || !canvas) return;
 
   const fallback = [
-    { name: 'HiPHI-MoCap', display: 'HiPHI (ours)', color: '#B98AD9', long_tail_percent: 14.1, effective_occupied_cells: 1443, occupied_cells: 1620 },
+    { name: 'HiPHI', display: 'HiPHI (ours)', color: '#B98AD9', long_tail_percent: 14.1, effective_occupied_cells: 1443, occupied_cells: 1620 },
     { name: 'BONES-SEED-SOMA', display: 'BONES-SEED', color: '#5E88BF', long_tail_percent: 10.7, effective_occupied_cells: 1114, occupied_cells: 1438 },
   ];
   const stats = (data.long_tail_stats?.length ? data.long_tail_stats : fallback)

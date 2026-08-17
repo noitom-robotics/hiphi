@@ -192,6 +192,13 @@ html, body {
 .meta-row:last-child { border-bottom: 0; }
 .meta-row dt { flex-shrink: 0; color: var(--muted); }
 .meta-row dd { margin: 0; text-align: right; font: 12px var(--mono); color: var(--text); }
+.meta-row-long { flex-direction: column; gap: 4px; }
+.meta-row-long dd {
+  text-align: left;
+  font: 13px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
 
 .splitter {
   flex-shrink: 0;
@@ -218,22 +225,6 @@ html, body {
 }
 .viewer-canvas { position: absolute; inset: 0; }
 .viewer-canvas canvas { display: block; }
-
-.viewer-annotation {
-  position: absolute;
-  bottom: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 80%;
-  padding: 8px 16px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  color: #fff;
-  font-size: 13px;
-  text-align: center;
-  pointer-events: none;
-}
 
 .viewer-status {
   position: absolute;

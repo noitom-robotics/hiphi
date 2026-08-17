@@ -3,12 +3,24 @@
 from __future__ import annotations
 
 import argparse
+import secrets
 import sys
 import threading
 import webbrowser
 from pathlib import Path
 
 from .server import Source, load_recent_path, make_server, resolve_source, save_recent_path
+from .service import register_service, unregister_service
+
+
+def server_port(raw: str) -> int:
+    try:
+        port = int(raw)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"invalid port: {raw}") from exc
+    if not 0 <= port <= 65535:
+        raise argparse.ArgumentTypeError(f"invalid port: {raw}")
+    return port
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -22,7 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Extracted HiPHI dataset folder, or a single .bvh file. "
         "Defaults to the current directory; you can also set it in the viewer.",
     )
-    parser.add_argument("--port", type=int, default=8666, help="Port to listen on (default: 8666).")
+    parser.add_argument("--port", type=server_port, default=8666, help="Port to listen on (default: 8666).")
     parser.add_argument("--no-browser", action="store_true", help="Do not open a browser window.")
     return parser
 
@@ -46,7 +58,7 @@ def choose_source(path_arg: str | None) -> tuple[Source | None, str]:
             source = resolve_source(path_arg)
         except ValueError as exc:
             return None, str(exc)
-        save_recent_path(Path(path_arg).expanduser())
+        save_recent_path(source.path)
         return source, ""
 
     recent = load_recent_path()
@@ -71,14 +83,23 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {note}", file=sys.stderr)
         return 1
 
+    stop_token = secrets.token_urlsafe(32)
     try:
-        server = make_server(source, args.port)
+        server = make_server(source, args.port, stop_token=stop_token)
     except OSError as exc:
         print(f"error: could not listen on port {args.port}: {exc}", file=sys.stderr)
         print("Try a different port with --port.", file=sys.stderr)
         return 1
 
-    url = f"http://127.0.0.1:{server.server_address[1]}/"
+    actual_port = int(server.server_address[1])
+    try:
+        register_service(actual_port, stop_token)
+    except OSError as exc:
+        server.server_close()
+        print(f"error: could not register the local stop service: {exc}", file=sys.stderr)
+        return 1
+
+    url = f"http://127.0.0.1:{actual_port}/"
     print("HiPHI Motion Viewer")
     print(f"  serving: {source.root}")
     if source.single_file:
@@ -98,6 +119,7 @@ def main(argv: list[str] | None = None) -> int:
         print("\nstopped")
     finally:
         server.server_close()
+        unregister_service(actual_port, stop_token)
     return 0
 
 
