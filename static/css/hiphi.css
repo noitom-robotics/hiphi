@@ -75,7 +75,7 @@ h3 { font-size: 1.24rem; }
 .btn.muted { color: var(--muted); background: rgba(255,255,255,.68); }
 .btn-icon { display: inline-flex; margin-right: .48rem; font-size: 1.08em; line-height: 1; }
 .project-links .btn-icon { width: 1.15em; height: 1.15em; align-items: center; justify-content: center; flex: 0 0 auto; }
-.resource-icon { object-fit: contain; }
+.resource-icon { width: 1.15em !important; height: 1.15em !important; max-width: 1.15em; object-fit: contain; }
 .project-links { width: min(980px, calc(100vw - 2rem)); justify-content: center; }
 .project-links .btn { min-width: 7.4rem; }
 .stat-ribbon { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .75rem; margin-top: 1.5rem; }

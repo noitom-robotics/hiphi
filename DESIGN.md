@@ -39,11 +39,11 @@
 - Shape/radius/elevation: Pill links and softly elevated rounded cards using existing CSS variables.
 - Motion: Short hover transitions; no essential information depends on animation.
 - Imagery/iconography: Anonymized motion previews, technical figures, and lightweight labels. Resource buttons use compact source-aligned marks for Hugging Face, arXiv, GitHub, and ModalityNet; Online Viewer uses a lightweight eye emoji, without an icon dependency.
-- Quantitative charts: Use the paper's dataset order and color-separated small multiples, keep MPJPE in absolute millimetres, show all four training-data scales, and pair the mean line with its population-variation band without a chart-library dependency.
+- Quantitative charts: Use the paper's four cross-dataset benchmarks in order, keep MPJPE in absolute millimetres, label the axis `HiPHI training data scale (hours)`, show all four training-data scales, and pair the mean line with its population-variation band without a chart-library dependency.
 
 ## Components
 - Existing components to reuse: `.btn`, `.hero-actions`, navigation pills, cards, metric chips, video frames, and interactive iframe shells.
-- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Humanoid Learning includes a paper-aligned five-panel scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls.
+- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Humanoid Learning includes a paper-aligned four-panel cross-dataset scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls.
 - Variants and states: Dataset is the sole primary link and carries a leading Hugging Face mark; arXiv, GitHub, Online Viewer, and ModalityNet are neutral secondary links. Hover and keyboard-focus states must remain visible.
 - Token/component ownership: Shared full-page components live in `static/css/hiphi.css`; simplified-page equivalents live in `static/css/simple.css`.
 
@@ -56,7 +56,7 @@
 
 ## Responsive behavior
 - Supported breakpoints/devices: Modern desktop and mobile browsers; existing breakpoints at 1180/1100px and below remain authoritative.
-- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. The scaling chart preserves five legible panels through horizontal scrolling on compact screens.
+- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. The scaling chart preserves four legible panels through horizontal scrolling on compact screens.
 - Touch/hover differences: Pill links keep a minimum touch height; hover effects are decorative only.
 
 ## Interaction states
@@ -77,4 +77,4 @@
 - Design-token constraints: Extend the existing CSS variables and components; do not add a new design-system layer.
 - Performance constraints: No new runtime dependency, font request, or icon package for project links.
 - Compatibility constraints: Preserve the static hosting model and relative local asset paths.
-- Test/screenshot expectations: Run `python3 scripts/check_site_assets.py`, enforce the 132-performer source of truth, verify scaling data against the experiment CSVs, and inspect both desktop and mobile rendering of the full five-panel chart.
+- Test/screenshot expectations: Run `python3 scripts/check_site_assets.py`, enforce the 132-performer source of truth, verify the four paper scaling benchmarks against the experiment CSVs, and inspect both desktop and mobile rendering of the full four-panel chart.

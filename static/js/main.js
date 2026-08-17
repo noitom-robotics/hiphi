@@ -951,7 +951,7 @@ function renderScalingChart(data) {
     return node;
   };
   const title = make('title', { id: 'scaling-chart-title' }, data.title || 'HiPHI humanoid tracking scaling curves');
-  const desc = make('desc', { id: 'scaling-chart-desc' }, 'Mean MPJPE decreases as HiPHI training data increases from 3 to 300 hours across all five reported evaluation families.');
+  const desc = make('desc', { id: 'scaling-chart-desc' }, 'Mean MPJPE decreases as HiPHI training data increases from 3 to 300 hours across four cross-dataset benchmarks.');
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.replaceChildren(title, desc);
 
@@ -1075,7 +1075,7 @@ function renderScalingChart(data) {
       x: panelX + panelWidth / 2,
       y: 374,
       'text-anchor': 'middle',
-    }, 'HiPHI training data (h)'));
+    }, 'HiPHI training data scale (hours)'));
     svg.appendChild(group);
   });
 }

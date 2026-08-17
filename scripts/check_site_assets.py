@@ -169,8 +169,9 @@ def check_scaling_data(errors: list[str]) -> None:
         errors.append(f"scaling data must use the paper's 3/20/100/300-hour schedule, found {hours!r}")
     if data.get("repeat_count") != 10:
         errors.append(f"scaling data must report 10 repeated runs, found {data.get('repeat_count')!r}")
-    if not isinstance(series, list) or len(series) != 5:
-        errors.append("scaling data must contain the five paper evaluation families")
+    expected_families = ["AMASS", "BONES-SEED", "Motion-X++", "LaFAN1 (3h)"]
+    if not isinstance(series, list) or [item.get("name") for item in series] != expected_families:
+        errors.append(f"scaling data must contain the four paper benchmarks in order: {expected_families}")
         return
     for item in series:
         name = item.get("name", "unnamed")

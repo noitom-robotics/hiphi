@@ -1,5 +1,5 @@
 {
-  "title": "Scaling behavior of HiPHI for humanoid tracking",
+  "title": "More HiPHI. Lower Tracking Error.",
   "metric": "MPJPE",
   "unit": "mm",
   "lower_is_better": true,
@@ -37,14 +37,6 @@
       "population_std": [53.39502599722338, 31.040010471561395, 14.230871147362269, 0.0],
       "y_domain": [285, 930],
       "y_ticks": [300, 400, 500, 600, 700, 800, 900]
-    },
-    {
-      "name": "HiPHI",
-      "color": "#D45087",
-      "mean": [101.14993625320494, 44.16116427164525, 37.573277639846005, 35.4146130848676],
-      "population_std": [14.656700693837443, 2.420640092858107, 3.2278669414454764, 0.3597887136763627],
-      "y_domain": [20, 130],
-      "y_ticks": [20, 40, 60, 80, 100, 120]
     }
   ]
 }
