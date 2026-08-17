@@ -1,0 +1,68 @@
+[
+  {
+    "id": "hiphi_g1_3h_sample50",
+    "dataset": "HiPHI",
+    "setting": "3h",
+    "motion": "Sequentially sampled whole-body references",
+    "type": "G1 retargeted reference set",
+    "media": null,
+    "poster": null,
+    "status": "placeholder",
+    "available_npz": 721,
+    "selected": 50,
+    "note": "Local sample contains retargeted NPZ/MotionLib/proto motion artifacts, not browser-ready media in the initial inspection."
+  },
+  {
+    "id": "hiphi_g1_20h_sample50",
+    "dataset": "HiPHI",
+    "setting": "20h",
+    "motion": "Sequentially sampled whole-body references",
+    "type": "G1 retargeted reference set",
+    "media": null,
+    "poster": null,
+    "status": "placeholder",
+    "available_npz": 4801,
+    "selected": 50,
+    "note": "Local sample contains retargeted NPZ/MotionLib/proto motion artifacts, not browser-ready media in the initial inspection."
+  },
+  {
+    "id": "object_aware_tracking_kick",
+    "dataset": "HiPHI",
+    "setting": "object-aware",
+    "motion": "Kick",
+    "type": "Object-aware tracking category",
+    "media": null,
+    "poster": null,
+    "status": "placeholder"
+  },
+  {
+    "id": "object_aware_tracking_carry",
+    "dataset": "HiPHI",
+    "setting": "object-aware",
+    "motion": "Carry",
+    "type": "Object-aware tracking category",
+    "media": null,
+    "poster": null,
+    "status": "placeholder"
+  },
+  {
+    "id": "object_aware_tracking_push",
+    "dataset": "HiPHI",
+    "setting": "object-aware",
+    "motion": "Push",
+    "type": "Object-aware tracking category",
+    "media": null,
+    "poster": null,
+    "status": "placeholder"
+  },
+  {
+    "id": "object_aware_tracking_lean",
+    "dataset": "HiPHI",
+    "setting": "object-aware",
+    "motion": "Lean",
+    "type": "Object-aware tracking category",
+    "media": null,
+    "poster": null,
+    "status": "placeholder"
+  }
+]

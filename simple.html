@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Simplified HiPHI project page with title, overview, FrameNet pipeline, and t-SNE atlas.">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>HiPHI: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="stylesheet" href="static/css/simple.css">
+</head>
+<body data-page="simple-default">
+  <header class="simple-nav" aria-label="Simple page navigation">
+    <a class="brand" href="#title" aria-label="HiPHI title"><span><span class="brand-hi">Hi</span><span class="brand-phi">PHI</span></span></a>
+    <nav class="jump-nav" aria-label="Section navigation">
+      <a href="#overview">Overview</a>
+      <a href="#framenet">FrameNet</a>
+      <a href="#tsne">t-SNE</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="title" class="simple-title" aria-label="HiPHI title">
+      <div class="title-wrap">
+        <h1 class="wordmark" aria-label="HiPHI"><span class="hi">Hi</span><span class="phi">PHI</span></h1>
+        <h2 class="title-lines"><span>A Large-Scale Benchmark</span><span>for High-Precision Human Motion</span><span>and Object-Interaction</span></h2>
+        <p class="title-tagline">High-precision optical MoCap, synchronized object-interaction, and Frame-LU motion units for humanoid learning.</p>
+        <p class="title-release">Complete dataset release after paper acceptance.</p>
+      </div>
+    </section>
+
+    <section id="overview" class="simple-section overview-section">
+      <div class="section-title-top">
+        <h2>FrameNet-guided motion units, captured as high-precision MoCap.</h2>
+      </div>
+      <figure class="card overview-video section-media" aria-label="HiPHI overview video">
+        <video controls muted playsinline preload="metadata" poster="static/images/hero_poster.webp">
+          <source src="static/videos/HiPHI_demo_video_web.mp4" type="video/mp4">
+        </video>
+      </figure>
+      <p class="eyebrow media-tag">Overview</p>
+      <div class="overview-grid">
+        <article class="card overview-copy">
+          <p>HiPHI is a 617.5-hour optical MoCap benchmark for high-precision human motion and object-interaction. The dataset construction starts from lexical FrameNet seeds, expands them into Frame-LU motion units, and records synchronized human motion with object state when the motion requires it.</p>
+          <div class="fact-grid" aria-label="HiPHI facts">
+            <div><strong>617.5 h</strong><span>release duration</span></div>
+            <div><strong>200.1M</strong><span>frames</span></div>
+            <div><strong>90 Hz</strong><span>optical MoCap</span></div>
+            <div><strong>102</strong><span>performers</span></div>
+          </div>
+        </article>
+        <div class="overview-cards">
+          <article class="card"><h3>Coverage-guided design</h3><p>FrameNet frames and lexical units become concrete motion seeds.</p></article>
+          <article class="card"><h3>Object-grounded interaction</h3><p>Human BVH, object trajectories, and meshes are synchronized in the motion record.</p></article>
+          <article class="card"><h3>Motion-space summary</h3><p>Coverage and precision are summarized through compact metrics and the interactive atlas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="framenet" class="simple-section framenet-section">
+      <div class="section-title-top compact">
+        <h2>Lexical motion seeds become a controlled data-construction pipeline.</h2>
+      </div>
+      <figure class="figure-card section-media">
+        <img src="static/images/framenet_pipeline.png" width="4340" height="1352" alt="FrameNet to HiPHI data-construction pipeline" loading="eager">
+      </figure>
+      <p class="eyebrow media-tag">FrameNet / Frame-LU</p>
+      <p class="media-description">HiPHI uses FrameNet frames and lexical units as motion seeds. Each Frame-LU expands through controlled realization factors such as speed, direction, posture, body-part involvement, and object/contact conditions.</p>
+      <div class="metric-row" aria-label="Frame-LU metrics">
+        <div><strong>22</strong><span>FrameNet frames</span></div>
+        <div><strong>214</strong><span>Frame-LU labels</span></div>
+        <div><strong>27</strong><span>median actors per Frame-LU</span></div>
+        <div><strong>143</strong><span>Frame-LUs with ≥10 actors</span></div>
+      </div>
+    </section>
+
+    <section id="tsne" class="simple-section tsne-section">
+      <div class="section-title-top">
+        <h2>Interactive motion-space view.</h2>
+      </div>
+      <div class="atlas-card card section-media">
+        <div class="atlas-head">
+          <strong>Motion Atlas</strong>
+          <a href="static/interactive/tSNE_explorer_simple.html" target="_blank" rel="noopener">Open full page</a>
+        </div>
+        <iframe title="HiPHI t-SNE Motion Atlas" src="static/interactive/tSNE_explorer_simple.html" loading="lazy"></iframe>
+      </div>
+      <p class="eyebrow media-tag">t-SNE Motion Atlas</p>
+      <p class="media-description">Explore sampled motion-space neighborhoods and inspect representative skeleton motions from selected points.</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,87 @@
+{
+  "bodyMotionPrecision": [
+    {
+      "dataset": "HiPHI",
+      "duration_h": 617.5,
+      "jerk_m_s3": 173.9,
+      "accel_m_s2": 10.7,
+      "ground_mm": 8,
+      "float_percent": 0.015,
+      "foot_mm_s": 64
+    },
+    {
+      "dataset": "AMASS",
+      "duration_h": 62.9,
+      "jerk_m_s3": 529.0,
+      "accel_m_s2": 14.9,
+      "ground_mm": 111,
+      "float_percent": 0.76,
+      "foot_mm_s": 87
+    },
+    {
+      "dataset": "BONES-SEED",
+      "duration_h": 288.3,
+      "jerk_m_s3": 294.2,
+      "accel_m_s2": 11.3,
+      "ground_mm": 18,
+      "float_percent": 1.02,
+      "foot_mm_s": 86
+    },
+    {
+      "dataset": "Motion-X++",
+      "duration_h": 26.0,
+      "jerk_m_s3": 709.0,
+      "accel_m_s2": 23.8,
+      "ground_mm": null,
+      "float_percent": null,
+      "foot_mm_s": null
+    },
+    {
+      "dataset": "LAFAN1",
+      "duration_h": 4.6,
+      "jerk_m_s3": 383.1,
+      "accel_m_s2": 23.4,
+      "ground_mm": 29,
+      "float_percent": 7.22,
+      "foot_mm_s": 157
+    }
+  ],
+  "objectInteractionGeometry": [
+    {
+      "dataset": "HiPHI",
+      "duration_h": 245.7,
+      "eta_nc_percent": 98.1,
+      "rho_near_percent": 95.7
+    },
+    {
+      "dataset": "HIMO",
+      "duration_h": 21.6,
+      "eta_nc_percent": 97.6,
+      "rho_near_percent": 79.0
+    },
+    {
+      "dataset": "OMOMO",
+      "duration_h": 9.8,
+      "eta_nc_percent": 90.6,
+      "rho_near_percent": 50.4
+    },
+    {
+      "dataset": "HUMOTO public subset",
+      "duration_h": 0.81,
+      "eta_nc_percent": 99.9,
+      "rho_near_percent": 82.9
+    }
+  ],
+  "coverage": {
+    "occupiedCells": 1620,
+    "effectiveOccupancy": 1443,
+    "longTailSharePercent": 14.1,
+    "closestBaselineLongTailSharePercent": 10.7
+  },
+  "objectAwareTrackingCategories": [
+    "Kick",
+    "Carry",
+    "Push",
+    "Lean"
+  ]
+}

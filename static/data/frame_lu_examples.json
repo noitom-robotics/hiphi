@@ -1,0 +1,92 @@
+[
+  {
+    "family": "Locomotion and direction",
+    "description": "Path, direction, speed, turning radius, and step rhythm.",
+    "examples": [
+      {
+        "frame": "Self_motion",
+        "lu": "walk"
+      },
+      {
+        "frame": "Self_motion",
+        "lu": "run"
+      },
+      {
+        "frame": "Self_motion",
+        "lu": "stride"
+      }
+    ]
+  },
+  {
+    "family": "Posture and support",
+    "description": "Body height, support relation, amplitude, and transition speed.",
+    "examples": [
+      {
+        "frame": "Change_posture",
+        "lu": "crawl"
+      },
+      {
+        "frame": "Posture",
+        "lu": "kneel"
+      },
+      {
+        "frame": "Posture",
+        "lu": "lean"
+      },
+      {
+        "frame": "Posture",
+        "lu": "squat"
+      }
+    ]
+  },
+  {
+    "family": "Body-part motion",
+    "description": "Body part, range of motion, rhythm, and unilateral/bilateral pattern.",
+    "examples": [
+      {
+        "frame": "Body_movement",
+        "lu": "bend"
+      },
+      {
+        "frame": "Body_movement",
+        "lu": "clap"
+      }
+    ]
+  },
+  {
+    "family": "Object actuation and transfer",
+    "description": "Object category, contact mode, load condition, and object trajectory.",
+    "examples": [
+      {
+        "frame": "Cause_motion",
+        "lu": "pull"
+      },
+      {
+        "frame": "Cause_motion",
+        "lu": "lift"
+      },
+      {
+        "frame": "Bringing",
+        "lu": "carry"
+      }
+    ]
+  },
+  {
+    "family": "Object-local dynamics",
+    "description": "Axis of motion, contact point, amplitude, and repetition pattern.",
+    "examples": [
+      {
+        "frame": "Cause_to_move_in_place",
+        "lu": "rotate"
+      },
+      {
+        "frame": "Cause_to_move_in_place",
+        "lu": "shake"
+      },
+      {
+        "frame": "Cause_to_move_in_place",
+        "lu": "swing"
+      }
+    ]
+  }
+]

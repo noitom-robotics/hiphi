@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HiPHI is a 617.5-hour optical MoCap benchmark for high-precision human motion and object-interaction.">
+  <title>HiPHI: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="stylesheet" href="static/css/hiphi.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" aria-label="Primary navigation">
+    <nav class="nav-shell">
+      <a class="brand" href="#top" aria-label="HiPHI home"><span><span class="brand-hi">Hi</span><span class="brand-phi">PHI</span></span></a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <div class="nav-links" data-nav-links>
+        <a href="#overview">Overview</a>
+        <a href="#motion-atlas">Motion Atlas</a>
+        <a href="#frame-lu">Frame-LU</a>
+        <a href="#object-interaction">Object Interaction</a>
+        <a href="#g1">G1 Retargeting</a>
+        <a href="#benchmark">Benchmark</a>
+        <a href="#release">Release</a>
+      </div>
+    </nav>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+  </header>
+
+  <main id="main">
+    <section id="top" class="hero section-pad site-section hero-title-cover">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-shell">
+        <div class="hero-main hero-main-titleonly">
+          <div class="hero-copy">
+            <h1 class="hero-wordmark" aria-label="HiPHI"><span class="wordmark-hi">Hi</span><span class="wordmark-phi">PHI</span></h1>
+            <h2 class="title-lines"><span>A Large-Scale Benchmark</span><span>for High-Precision Human Motion</span><span>and Object-Interaction</span></h2>
+            <p class="hero-lede">High-precision optical MoCap, synchronized object-interaction, and Frame-LU motion units for humanoid learning.</p>
+            <p class="release-note">Complete dataset release after paper acceptance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" class="section-pad content-grid overview-grid site-section">
+      <div class="overview-copy">
+        <p class="eyebrow">Overview</p>
+        <h2>From FrameNet-guided motion units to humanoid-ready MoCap.</h2>
+        <p class="section-lede">HiPHI treats data collection as coverage-guided motion-space design: lexical FrameNet seeds become concrete, repeatable, high-precision optical MoCap sequences with object state when the motion requires it.</p>
+        <div class="metric-chips overview-facts" aria-label="Dataset facts">
+          <span><b data-stat-key="totalDurationHours" data-stat-format="hours">617.5 h</b> total release duration</span>
+          <span><b data-stat-key="totalFramesMillions" data-stat-format="millions">200.1M</b> frames</span>
+          <span><b data-stat-key="captureFrameRateHz" data-stat-format="hz">90 Hz</b> optical MoCap</span>
+          <span><b data-stat-key="performers">102</b> performers</span>
+        </div>
+        <div class="overview-cards">
+          <article class="card"><h3>Coverage-guided motion design</h3><p>FrameNet frames and lexical units become Frame-LU motion seeds, expanded into performer-facing capture instructions.</p></article>
+          <article class="card"><h3>Object-grounded interaction</h3><p>Object state is part of the motion record: synchronized human BVH, object trajectories, and object meshes.</p></article>
+          <article class="card"><h3>Humanoid-ready benchmark</h3><p>Includes motion-space analysis, quality metrics, G1 retargeted references, and humanoid tracking evaluation.</p></article>
+        </div>
+      </div>
+      <div id="overview-video" class="video-frame overview-video cardless">
+        <video controls preload="metadata" poster="static/images/hero_poster.webp">
+          <source src="static/videos/HiPHI_demo_video_web.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+
+    <section id="motion-atlas" class="section-pad atlas-section site-section">
+      <div class="wide-grid section-heading atlas-heading">
+        <div>
+          <p class="eyebrow">Motion Atlas</p>
+          <h2>Interactive t-SNE Motion Atlas</h2>
+          <p>Explore the shared kinematic embedding used to compare HiPHI against representative motion datasets. Click sampled points to preview representative skeleton motions.</p>
+        </div>
+        <div class="metric-chips atlas-metrics">
+          <span><b data-stat-key="occupiedCells">1620</b> occupied cells</span>
+          <span><b data-stat-key="effectiveOccupancy">1443</b> effective occupancy</span>
+          <span><b data-stat-key="longTailSharePercent" data-stat-format="percent">14.1%</b> long-tail share</span>
+          <span><b data-stat-key="closestBaselineLongTailSharePercent" data-stat-format="percent">10.7%</b> closest baseline long-tail share</span>
+        </div>
+      </div>
+      <div class="atlas-frame-wrap wide-grid card">
+        <div class="module-head">
+          <div><strong>Motion Atlas</strong><span>Interactive t-SNE view with representative motion previews</span></div>
+          <a class="btn" href="static/interactive/tSNE_explorer.html" target="_blank" rel="noopener">Open full page</a>
+        </div>
+        <iframe title="HiPHI Motion Atlas" src="static/interactive/tSNE_explorer.html" loading="lazy"></iframe>
+      </div>
+      <div class="atlas-artifacts wide-grid">
+        <figure class="card tsne-envelope" data-tsne-envelope>
+          <div class="envelope-head">
+            <div><strong>Overlay occupancy envelope</strong><span>Paper-aligned 55×55 grid · default comparison: HiPHI + BONES-SEED</span></div>
+            <button class="btn small" type="button" data-tsne-envelope-reset>Reset pair</button>
+          </div>
+          <div class="envelope-toolbar" data-tsne-envelope-controls aria-label="Toggle datasets in the envelope overlay"></div>
+          <div class="envelope-stage">
+            <canvas data-tsne-envelope-canvas aria-label="Overlayed t-SNE occupancy envelopes"></canvas>
+          </div>
+          <figcaption>Toggle datasets to overlay occupied cells in the archived paper-panel 55×55 t-SNE grid. HiPHI and BONES-SEED are shown by default for direct comparison.</figcaption>
+        </figure>
+        <figure class="card atlas-tail-viz" data-tsne-tail-viz>
+          <div class="tail-viz-head">
+            <strong>Long-tail coverage</strong>
+            <span>55×55 grid statistics</span>
+          </div>
+          <canvas data-tsne-tail-canvas aria-label="Long-tail coverage statistics chart"></canvas>
+          <div class="tail-viz-kpis" data-tsne-tail-kpis></div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="frame-lu" class="section-pad content-grid frame-section site-section">
+      <div class="section-heading compact">
+        <p class="eyebrow">Frame-LU construction</p>
+        <h2>FrameNet seeds become coverage-guided motion construction.</h2>
+        <p>HiPHI uses FrameNet frames and lexical units as motion seeds. Each Frame-LU expands through controlled realization factors such as speed, direction, posture, body-part involvement, and object/contact conditions.</p>
+        <div class="metric-chips">
+          <span><b data-stat-key="framenetFrames">22</b> FrameNet frames</span>
+          <span><b data-stat-key="frameLuLabels">214</b> Frame-LU labels</span>
+          <span><b data-stat-key="medianActorsPerFrameLu">27</b> median actors per Frame-LU</span>
+          <span><b data-stat-key="frameLusAtLeast10Actors">143</b> Frame-LUs with ≥10 actors</span>
+        </div>
+      </div>
+      <figure class="pipeline-figure card">
+        <img src="static/images/framenet_pipeline.png" alt="Figure showing the FrameNet to HiPHI data-construction pipeline" loading="lazy">
+        <figcaption>Pipeline figure: motion-relevant FrameNet frames and lexical units define motion seeds, which are expanded through controlled realization factors before optical MoCap capture and release packaging.</figcaption>
+      </figure>
+      <div class="browser-grid card">
+        <div class="family-list" data-frame-family-list></div>
+        <div class="example-panel">
+          <h3 data-frame-family-title>Loading motion units…</h3>
+          <p data-frame-family-description></p>
+          <div class="lu-chip-wrap" data-lu-chips></div>
+          <div class="preview-card skeleton-card" data-lu-preview>
+            <div class="skeleton-lines" aria-hidden="true"></div>
+            <div><strong>Representative motion preview</strong><p>Select a Frame-LU chip to inspect a representative motion preview.</p></div>
+          </div>
+        </div>
+        <div class="pipeline card soft-card pipeline-flow frame-flow" aria-label="HiPHI data pipeline">
+          <div class="flow-head">
+            <span>Construction path</span>
+            <strong>Frame-LU → MoCap release</strong>
+          </div>
+          <ol class="flow-steps">
+            <li><span>01</span><b>FrameNet frames</b></li>
+            <li><span>02</span><b>Frame-LU seeds</b></li>
+            <li><span>03</span><b>Controlled factors</b></li>
+            <li><span>04</span><b>Optical MoCap</b></li>
+            <li><span>05</span><b>BVH, objects, meshes</b></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="object-interaction" class="section-pad content-grid object-section site-section">
+      <div class="section-heading compact">
+        <p class="eyebrow">Object-grounded motion</p>
+        <h2>Object state is part of the motion record.</h2>
+        <p>HiPHI records synchronized human motion, object trajectories, and object meshes. Object-interaction is therefore physically grounded rather than a text label attached after capture.</p>
+        <div class="metric-chips">
+          <span><b data-stat-key="strictObjectInteractionHours" data-stat-format="hours">245.7 h</b> strict object-interaction</span>
+          <span><b data-stat-key="strictObjectInteractionSharePercent" data-stat-format="percent">39.8%</b> strict share</span>
+          <span><b data-stat-key="objectCategories">12</b> object categories</span>
+          <span>98.1% non-conflict</span>
+          <span>95.7% near-surface grounding</span>
+        </div>
+      </div>
+      <div class="interaction-layout">
+        <div class="tabs card" data-object-tabs></div>
+        <article class="object-card card glass" data-object-card></article>
+      </div>
+    </section>
+
+    <section id="g1" class="section-pad content-grid g1-section site-section">
+      <div class="section-heading compact">
+        <p class="eyebrow">Humanoid evaluation</p>
+        <h2>G1 retargeted reference playback.</h2>
+        <p>G1 retargeted reference playback provides a qualitative view of humanoid-ready motion transfer.</p>
+      </div>
+      <div class="g1-player card glass g1-mesh-player">
+        <iframe class="g1-mesh-frame" data-heavy-iframe data-src="static/interactive/g1_motion_browser.html?embed=1" title="G1 robot mesh playback" loading="lazy" srcdoc="&lt;!doctype html&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{height:100%;margin:0}body{display:grid;place-items:center;background:linear-gradient(135deg,#fffafd,#fff1f8);font-family:Inter,system-ui,sans-serif;color:#181827}.box{text-align:center;border:1px solid rgba(154,75,139,.18);border-radius:24px;padding:24px 30px;background:rgba(255,255,255,.78);box-shadow:0 20px 60px rgba(104,44,98,.10)}b{color:#b044f4}p{color:#696174;margin:.45rem 0 0}&lt;/style&gt;&lt;div class=&quot;box&quot;&gt;&lt;b&gt;G1 robot preview&lt;/b&gt;&lt;p&gt;Retargeted reference playback.&lt;/p&gt;&lt;/div&gt;"></iframe>
+      </div>
+    </section>
+
+    <section id="benchmark" class="section-pad content-grid benchmark-section site-section">
+      <div class="section-heading compact">
+        <p class="eyebrow">Benchmark</p>
+        <h2>Benchmark summary.</h2>
+        <p>Visual cards summarize motion coverage, body-motion precision, and object-interaction geometry, with detailed values kept below for exact comparison.</p>
+      </div>
+      <div class="benchmark-redesign">
+        <article class="card glass benchmark-hero-card">
+          <div class="benchmark-kpi-main">
+            <span>Motion-space coverage</span>
+            <strong data-stat-key="occupiedCells">1620</strong>
+            <em>occupied cells</em>
+          </div>
+          <div class="coverage-rings" aria-label="Coverage summary">
+            <div class="coverage-ring ring-primary"><span data-stat-key="effectiveOccupancy">1443</span><small>effective occupancy</small></div>
+            <div class="coverage-ring ring-secondary"><span data-stat-key="longTailSharePercent" data-stat-format="percent">14.1%</span><small>long-tail share</small></div>
+          </div>
+          <div class="benchmark-mini-stats">
+            <span><b data-stat-key="closestBaselineLongTailSharePercent" data-stat-format="percent">10.7%</b> closest-baseline long-tail share</span>
+            <span><b>55×55</b> coverage grid</span>
+            <span><b>HiPHI</b> highlighted across comparisons</span>
+          </div>
+        </article>
+
+        <article class="card benchmark-visual-card benchmark-precision-card">
+          <div class="benchmark-card-head">
+            <h3>Body-motion precision</h3>
+            <p>Lower values indicate smoother, cleaner, and more floor-consistent motion.</p>
+          </div>
+          <div class="precision-bars" data-precision-bar-list></div>
+        </article>
+
+        <article class="card benchmark-visual-card benchmark-object-card">
+          <div class="benchmark-card-head">
+            <h3>Object-interaction geometry</h3>
+            <p>Duration, non-conflict, and near-surface grounding in one compact view.</p>
+          </div>
+          <div class="object-benchmark-bars" data-object-bar-list></div>
+        </article>
+
+        <article class="card table-card benchmark-table-card">
+          <div class="benchmark-card-head">
+            <h3>Detailed values</h3>
+            <p>Compact numeric tables for exact comparison.</p>
+          </div>
+          <div class="benchmark-table-columns">
+            <div class="table-wrap" data-body-table></div>
+            <div class="table-wrap" data-object-table></div>
+          </div>
+          <p class="caption">Motion-X++ floor metrics are unavailable because a comparable absolute floor convention is not available.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="release" class="section-pad content-grid release-section site-section">
+      <div class="release-top">
+        <div class="release-copy">
+          <p class="eyebrow">Release</p>
+          <h2>Release details.</h2>
+          <p>The complete dataset will be released after paper acceptance. The planned release is organized around BVH human motion, object trajectories, object meshes, Frame-LU index, and metadata manifests.</p>
+        </div>
+      </div>
+      <div class="release-grid release-grid-wide">
+        <article class="release-list card release-format-card">
+          <h3>Data format</h3>
+          <ul class="release-format-list">
+            <li><b>BVH</b><span>human motion</span></li>
+            <li><b>Object trajectories</b><span>synchronized state</span></li>
+            <li><b>Object meshes</b><span>interaction geometry</span></li>
+            <li><b>Frame-LU index</b><span>lexical motion seed</span></li>
+            <li><b>Metadata manifest</b><span>clip-level records</span></li>
+          </ul>
+        </article>
+        <article class="release-list card release-metadata-card">
+          <h3>Metadata fields</h3>
+          <div class="field-list release-field-grid">
+            <span>clip_id</span><span>bvh_path</span><span>duration_sec</span><span>frame_count</span><span>fps</span><span>actor_id</span><span>frame</span><span>lu</span><span>frame_lu</span><span>motion_group</span><span>strict_object_interaction</span><span>object_id</span><span>object_category</span><span>interaction_type</span><span>object_trajectory_available</span><span>object_mesh_available</span><span>mirror_flag</span><span>parent_clip_id</span>
+          </div>
+        </article>
+        <article class="release-list card release-license-card">
+          <h3>License</h3>
+          <p>HiPHI Research License v1.0, non-commercial research use.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="content-grid footer-grid">
+      <strong>HiPHI</strong>
+      <span>Anonymous project page for review.</span>
+    </div>
+  </footer>
+
+  <script src="static/js/main.js" defer></script>
+</body>
+</html>

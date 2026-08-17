@@ -1,0 +1,24 @@
+{
+  "title": "HiPHI: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction",
+  "shortTitle": "HiPHI",
+  "tagline": "High-Precision Human Motion and Object-Interaction for Humanoid Learning",
+  "description": "HiPHI is a 617.5-hour optical MoCap benchmark that combines coverage-guided whole-body motion, synchronized object-interaction, and humanoid learning evaluation.",
+  "stats": {
+    "totalDurationHours": 617.5,
+    "totalFramesMillions": 200.1,
+    "captureFrameRateHz": 90,
+    "bodyOnlyHours": 371.8,
+    "strictObjectInteractionHours": 245.7,
+    "strictObjectInteractionSharePercent": 39.8,
+    "framenetFrames": 22,
+    "frameLuLabels": 214,
+    "performers": 102,
+    "medianActorsPerFrameLu": 27,
+    "frameLusAtLeast10Actors": 143,
+    "objectCategories": 12,
+    "occupiedCells": 1620,
+    "effectiveOccupancy": 1443,
+    "longTailSharePercent": 14.1,
+    "closestBaselineLongTailSharePercent": 10.7
+  }
+}

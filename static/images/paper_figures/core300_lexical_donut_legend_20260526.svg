@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1202" viewBox="0 0 1280 1202">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,"Noto Sans SC",sans-serif;fill:#172033}.muted{fill:#667085;font-size:16px}.head{font-weight:700;font-size:24px}.row{font-size:18px}.mono{font-family:monospace;font-size:16px}</style>
+<text x="28" y="44" class="head">Core-300 lexical donut legend</text>
+<text x="28" y="86" class="muted">Inner ring = lexical family; outer ring = Frame. Total clips: 18,000.</text>
+<text x="28" y="134" class="head">Inner ring / lexical family</text>
+<rect x="28" y="144" width="22" height="22" rx="4" fill="#D8A7C7" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="164" class="row">Body Shape &amp; Gesture / 身体姿态与局部动作 — 4,572 (25.40%)</text>
+<rect x="28" y="178" width="22" height="22" rx="4" fill="#8FA9D6" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="198" class="row">Body Movement / 全身移动与路径 — 6,080 (33.78%)</text>
+<rect x="28" y="212" width="22" height="22" rx="4" fill="#B9A7D8" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="232" class="row">Object Actuation / 物体受力与推进 — 1,925 (10.69%)</text>
+<rect x="28" y="246" width="22" height="22" rx="4" fill="#86B3CF" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="266" class="row">Object Transfer / 物体转移与容器操作 — 2,472 (13.73%)</text>
+<rect x="28" y="280" width="22" height="22" rx="4" fill="#C8A2BB" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="300" class="row">Object Dynamics / 物体局部动力学 — 1,516 (8.42%)</text>
+<rect x="28" y="314" width="22" height="22" rx="4" fill="#A8A4D6" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="334" class="row">Object Contact / 接触与表面操控 — 1,435 (7.97%)</text>
+<text x="28" y="388" class="head">Outer ring / Frame</text>
+<rect x="28" y="398" width="22" height="22" rx="4" fill="#dcb0cd" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="418" class="row">Body_movement — 3,534 (19.63%) / Body Shape &amp; Gesture </text>
+<rect x="28" y="432" width="22" height="22" rx="4" fill="#cfa0bf" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="452" class="row">Change_posture — 431 (2.39%) / Body Shape &amp; Gesture </text>
+<rect x="28" y="466" width="22" height="22" rx="4" fill="#dfb7d1" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="486" class="row">Posture — 335 (1.86%) / Body Shape &amp; Gesture </text>
+<rect x="28" y="500" width="22" height="22" rx="4" fill="#c296b3" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="520" class="row">Gesture — 262 (1.46%) / Body Shape &amp; Gesture </text>
+<rect x="28" y="534" width="22" height="22" rx="4" fill="#daabc9" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="554" class="row">Getting_up — 10 (0.06%) / Body Shape &amp; Gesture </text>
+<rect x="28" y="568" width="22" height="22" rx="4" fill="#9ab2da" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="588" class="row">Self_motion — 4,910 (27.28%) / Body Movement </text>
+<rect x="28" y="602" width="22" height="22" rx="4" fill="#89a2cd" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="622" class="row">Change_direction — 580 (3.22%) / Body Movement </text>
+<rect x="28" y="636" width="22" height="22" rx="4" fill="#a3b8dd" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="656" class="row">Motion_directional — 294 (1.63%) / Body Movement </text>
+<rect x="28" y="670" width="22" height="22" rx="4" fill="#8198c1" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="690" class="row">Dodging — 175 (0.97%) / Body Movement </text>
+<rect x="28" y="704" width="22" height="22" rx="4" fill="#93acd8" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="724" class="row">Patrolling — 121 (0.67%) / Body Movement </text>
+<rect x="28" y="738" width="22" height="22" rx="4" fill="#c0b0dc" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="758" class="row">Cause_motion — 1,925 (10.69%) / Object Actuation </text>
+<rect x="28" y="772" width="22" height="22" rx="4" fill="#92bbd4" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="792" class="row">Bringing — 1,631 (9.06%) / Object Transfer </text>
+<rect x="28" y="806" width="22" height="22" rx="4" fill="#81acc7" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="826" class="row">Taking — 296 (1.64%) / Object Transfer </text>
+<rect x="28" y="840" width="22" height="22" rx="4" fill="#9cc1d8" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="860" class="row">Placing — 177 (0.98%) / Object Transfer </text>
+<rect x="28" y="874" width="22" height="22" rx="4" fill="#79a1ba" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="894" class="row">Emptying — 150 (0.83%) / Object Transfer </text>
+<rect x="28" y="908" width="22" height="22" rx="4" fill="#8bb6d1" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="928" class="row">Removing — 92 (0.51%) / Object Transfer </text>
+<rect x="28" y="942" width="22" height="22" rx="4" fill="#7196ae" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="962" class="row">Attaching — 75 (0.42%) / Object Transfer </text>
+<rect x="28" y="976" width="22" height="22" rx="4" fill="#97bed6" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="996" class="row">Filling — 51 (0.28%) / Object Transfer </text>
+<rect x="28" y="1010" width="22" height="22" rx="4" fill="#ceabc2" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="1030" class="row">Cause_to_move_in_place — 1,516 (8.42%) / Object Dynamics </text>
+<rect x="28" y="1044" width="22" height="22" rx="4" fill="#b1adda" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="1064" class="row">Adjusting — 708 (3.93%) / Object Contact </text>
+<rect x="28" y="1078" width="22" height="22" rx="4" fill="#a19dcd" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="1098" class="row">Manipulation — 463 (2.57%) / Object Contact </text>
+<rect x="28" y="1112" width="22" height="22" rx="4" fill="#b8b4dd" stroke="#999" stroke-width="0.5"/>
+<text x="64" y="1132" class="row">Scouring — 264 (1.47%) / Object Contact </text>
+</svg>

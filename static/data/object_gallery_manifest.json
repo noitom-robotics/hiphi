@@ -1,0 +1,58 @@
+[
+  {
+    "category": "Carry",
+    "description": "Whole-body load-bearing motion with tracked object state.",
+    "status": "available",
+    "object_id": "Box_H_1",
+    "sample_id": "A01"
+  },
+  {
+    "category": "Push",
+    "description": "Object actuation shaped by contact, resistance, and trajectory.",
+    "status": "available",
+    "object_id": "Chair_A_1",
+    "sample_id": "A03"
+  },
+  {
+    "category": "Pull",
+    "description": "Object-constrained locomotion and whole-body coordination.",
+    "status": "available",
+    "object_id": "Box_A_1",
+    "sample_id": "A04"
+  },
+  {
+    "category": "Lean",
+    "description": "Support interaction where object geometry shapes body posture.",
+    "status": "available",
+    "object_id": "Chair_Q_1",
+    "sample_id": "A05"
+  },
+  {
+    "category": "Sit",
+    "description": "Posture transition grounded by real support geometry.",
+    "status": "available",
+    "object_id": "Chair_S_1",
+    "sample_id": "A06"
+  },
+  {
+    "category": "Kick",
+    "description": "Dynamic object-interaction with foot-object contact.",
+    "status": "available",
+    "object_id": "Box_H_1",
+    "sample_id": "A07"
+  },
+  {
+    "category": "Lift",
+    "description": "Object lifting with coordinated arm, torso, and load-bearing motion.",
+    "status": "available",
+    "object_id": "Chair_A_1",
+    "sample_id": "A02"
+  },
+  {
+    "category": "Swing",
+    "description": "Object-local dynamics with repeated rotational motion.",
+    "status": "available",
+    "object_id": "Mop_A_1",
+    "sample_id": "A08"
+  }
+]
