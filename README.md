@@ -1,23 +1,3 @@
----
-pretty_name: HiPHI
-viewer: false
-language:
-  - en
-license: other
-license_name: modalitynet-open-research-license-v1.0
-license_link: LICENSE.md
-tags:
-  - motion-capture
-  - human-motion
-  - humanoid-robotics
-  - human-object-interaction
-  - whole-body-motion
-  - bvh
-  - framenet
-size_categories:
-  - 10K<n<100K
----
-
 # HiPHI
 
 <video controls autoplay muted loop playsinline width="100%" src="https://huggingface.co/datasets/noitomrobotics/HiPHI/resolve/main/assets/HiPHI_demo_video.mp4"></video>
