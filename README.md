@@ -255,3 +255,13 @@ the mirrored mesh ID appends `__mirror`; both mesh variants live once under
 ## Citation
 
 [CITATION_PLACEHOLDER]
+
+## HiPHI Motion Viewer
+
+This repository includes the **HiPHI Motion Viewer**, a lightweight local
+viewer for browsing the release by Frame and LU, playing 55-joint BVH motion
+together with synchronized tracked objects, and inspecting motion metadata.
+It runs entirely on your machine and works with partial dataset downloads.
+
+See the [Motion Viewer guide](viewer/README.md) for setup, launch options,
+controls, supported data layouts, and troubleshooting.
