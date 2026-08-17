@@ -38,7 +38,7 @@
 - Spacing/layout rhythm: Wide centered sections, generous vertical breathing room, and responsive wrapping for compact controls.
 - Shape/radius/elevation: Pill links and softly elevated rounded cards using existing CSS variables.
 - Motion: Short hover transitions; no essential information depends on animation.
-- Imagery/iconography: Anonymized motion previews, technical figures, and lightweight labels. Resource buttons use compact source-aligned marks for Hugging Face, arXiv, GitHub, and ModalityNet; Online Viewer uses a lightweight eye emoji, without an icon dependency.
+- Imagery/iconography: Anonymized motion previews, technical figures, and lightweight labels. The favicon uses the existing purple-to-pink rounded-square gradient with a white `Hi` monogram. Resource buttons use compact source-aligned marks for Hugging Face, arXiv, GitHub, and ModalityNet; Online Viewer uses a desktop-monitor emoji, without an icon dependency.
 - Quantitative charts: Use the paper's four cross-dataset benchmarks in order, keep MPJPE in absolute millimetres, label the axis `HiPHI training data scale (hours)`, show all four training-data scales, and pair the mean line with its population-variation band without a chart-library dependency.
 
 ## Components
