@@ -69,12 +69,6 @@ export function motionMetadataRows(motion, metadata) {
     ['lexical unit', motion.lu],
   ]
 
-  const description = firstText(
-    metadata?.text_annotation,
-    motion.textAnnotation,
-  )
-  if (description) rows.push(['description', description, 'long'])
-
   const duration = metadata?.duration_sec ?? motion.durationSec
   const frameCount = metadata?.frame_count ?? motion.frameCount
   const actorId = firstText(metadata?.actor_id, motion.actorId)
@@ -99,6 +93,12 @@ export function motionMetadataRows(motion, metadata) {
 
   const mirrored = metadata?.mirrored ?? motion.mirrored
   if (mirrored !== undefined) rows.push(['mirrored', mirrored ? 'yes' : 'no'])
+
+  const description = firstText(
+    metadata?.text_annotation,
+    motion.textAnnotation,
+  )
+  if (description) rows.push(['description', description, 'long'])
   return rows
 }
 
