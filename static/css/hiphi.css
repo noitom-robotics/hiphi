@@ -1513,3 +1513,46 @@ th, td { padding: .62rem .55rem; }
   width: 100%;
   margin-right: 0;
 }
+
+/* Final paper citation block. */
+.citation-section {
+  padding-top: 4rem;
+}
+.citation-section .section-heading {
+  margin-bottom: 1.2rem;
+}
+.citation-paper-link {
+  color: #822eb5;
+  font-weight: 850;
+  text-decoration: underline;
+  text-decoration-color: rgba(130,46,181,.35);
+  text-underline-offset: .16em;
+}
+.citation-paper-link:hover {
+  text-decoration-color: currentColor;
+}
+.citation-paper-link:focus-visible {
+  outline: 2px solid rgba(176,68,244,.45);
+  outline-offset: 3px;
+  border-radius: .2em;
+}
+.citation-card {
+  padding: clamp(1rem, 1.7vw, 1.5rem);
+  background:
+    radial-gradient(circle at 90% 0, rgba(240,107,168,.12), transparent 20rem),
+    rgba(255,255,255,.9);
+}
+.citation-card pre {
+  margin: 0;
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  overflow-x: auto;
+  border-radius: 20px;
+  background: #171522;
+  color: #f8f2fb;
+  font: 600 clamp(.76rem, .8vw, .9rem)/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  tab-size: 2;
+}
+.citation-card pre:focus-visible {
+  outline: 3px solid rgba(176,68,244,.45);
+  outline-offset: 3px;
+}

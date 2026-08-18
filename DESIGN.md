@@ -24,7 +24,7 @@
 ## Information architecture
 - Primary navigation: Overview, Motion Atlas, Frame–LU, Object Interaction, Humanoid Learning, Benchmark, and Release.
 - Core routes/screens: The full one-page project site, the simplified project page, and embedded static interactives.
-- Content hierarchy: Wordmark and paper title, author and affiliation block, research-resource links, contribution summary, evidence/interactive sections, benchmark, and release details.
+- Content hierarchy: Wordmark and paper title, author and affiliation block, research-resource links, contribution summary, evidence/interactive sections, benchmark, release details, and a final paper-citation block.
 
 ## Design principles
 - Lead with the research contribution and the canonical resource links.
@@ -43,7 +43,7 @@
 
 ## Components
 - Existing components to reuse: `.btn`, `.hero-actions`, navigation pills, cards, metric chips, video frames, and interactive iframe shells.
-- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Authors with personal sites use subtle, keyboard-focusable name links; the first three equal-contribution authors receive a purple highlight and the final two corresponding authors receive a pink highlight. Humanoid Learning includes a paper-aligned four-panel cross-dataset scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls.
+- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Authors with personal sites use subtle, keyboard-focusable name links; the first three equal-contribution authors receive a purple highlight and the final two corresponding authors receive a pink highlight. Humanoid Learning includes a paper-aligned four-panel cross-dataset scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls. The final section presents the canonical arXiv link and BibTeX inside a responsive code card.
 - Variants and states: Dataset is the sole primary link and carries a leading Hugging Face mark; arXiv, GitHub, Online Viewer, and ModalityNet are neutral secondary links. Hover and keyboard-focus states must remain visible.
 - Token/component ownership: Shared full-page components live in `static/css/hiphi.css`; simplified-page equivalents live in `static/css/simple.css`.
 
@@ -56,7 +56,7 @@
 
 ## Responsive behavior
 - Supported breakpoints/devices: Modern desktop and mobile browsers; existing breakpoints at 1180/1100px and below remain authoritative.
-- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. The scaling chart preserves four legible panels through horizontal scrolling on compact screens.
+- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. The scaling chart preserves four legible panels through horizontal scrolling on compact screens. The final BibTeX card uses horizontal scrolling rather than altering citation text.
 - Touch/hover differences: Pill links keep a minimum touch height; hover effects are decorative only.
 
 ## Interaction states
