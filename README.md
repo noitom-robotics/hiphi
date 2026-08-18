@@ -5,7 +5,7 @@
 **A large-scale benchmark for high-precision human motion and object interaction.**
 
 - **Hugging Face:** [noitomrobotics/HiPHI](https://huggingface.co/datasets/noitomrobotics/HiPHI)
-- **Paper:** [PAPER_URL]
+- **Paper:** [arXiv:2608.16222](https://arxiv.org/abs/2608.16222)
 
 HiPHI is an optical motion-capture dataset for humanoid learning and
 whole-body motion modeling. It provides standardized BVH motion and, for
@@ -252,10 +252,6 @@ the mirrored mesh ID appends `__mirror`; both mesh variants live once under
 `object_meshes/`. See
 [docs/mirroring.md](docs/mirroring.md) for the transform and validation rules.
 
-## Citation
-
-[CITATION_PLACEHOLDER]
-
 ## HiPHI Motion Viewer
 
 This repository includes the **HiPHI Motion Viewer**, a lightweight local
@@ -265,3 +261,20 @@ It runs entirely on your machine and works with partial dataset downloads.
 
 See the [Motion Viewer guide](viewer/README.md) for setup, launch options,
 controls, supported data layouts, and troubleshooting.
+
+## Citation
+
+If you use HiPHI in your research, please cite:
+
+```bibtex
+@article{ji2026hiphi,
+  title         = {{HiPHI}: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction},
+  author        = {Ji, Jiahao and Ma, Ji and Zhang, Runhan and Yu, Runyi and Wang, Wenjia and Chi, Weiheng and Peng, Qianqian and Yan, Weichao and Gu, Yongfei and Tian, Ye and Wu, Ting and Li, Longwei and Yuan, Chun and Dai, Ruoli and Han, Lei},
+  journal       = {arXiv preprint arXiv:2608.16222},
+  year          = {2026},
+  eprint        = {2608.16222},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO},
+  url           = {https://arxiv.org/abs/2608.16222}
+}
+```
