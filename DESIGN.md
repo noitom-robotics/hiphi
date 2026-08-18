@@ -43,7 +43,7 @@
 
 ## Components
 - Existing components to reuse: `.btn`, `.hero-actions`, navigation pills, cards, metric chips, video frames, and interactive iframe shells.
-- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Humanoid Learning includes a paper-aligned four-panel cross-dataset scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls.
+- New/changed components: The cover uses an enlarged centered author/affiliation block and a wrapping project-resource link group. Authors with personal sites use subtle, keyboard-focusable name links; the first three equal-contribution authors receive a purple highlight and the final two corresponding authors receive a pink highlight. Humanoid Learning includes a paper-aligned four-panel cross-dataset scaling chart with mean curves, variance bands, and directly labelled MPJPE values. The former Motion Atlas envelope/long-tail visualization block is removed. The Frame–LU motion stage is intentionally half-height to keep the interactive browser compact while retaining playback controls.
 - Variants and states: Dataset is the sole primary link and carries a leading Hugging Face mark; arXiv, GitHub, Online Viewer, and ModalityNet are neutral secondary links. Hover and keyboard-focus states must remain visible.
 - Token/component ownership: Shared full-page components live in `static/css/hiphi.css`; simplified-page equivalents live in `static/css/simple.css`.
 

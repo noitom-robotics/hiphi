@@ -125,6 +125,37 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.66;
   font-weight: 780;
 }
+.author-link {
+  border-radius: .3em;
+  text-decoration: underline;
+  text-decoration-color: rgba(130,46,181,.32);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .16em;
+  transition: filter .16s ease, text-decoration-color .16s ease;
+}
+.author-link:hover {
+  filter: brightness(.82);
+  text-decoration-color: currentColor;
+}
+.author-link:focus-visible {
+  outline: 2px solid rgba(176,68,244,.45);
+  outline-offset: 3px;
+}
+.author-emphasis {
+  padding: .04em .14em;
+  border-radius: .32em;
+  font-weight: 900;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.author-emphasis.is-equal {
+  color: #822eb5;
+  background: rgba(176,68,244,.11);
+}
+.author-emphasis.is-corresponding {
+  color: #b82f70;
+  background: rgba(240,107,168,.13);
+}
 .affiliation-list,
 .author-notes {
   display: flex;
