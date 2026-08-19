@@ -268,13 +268,9 @@ If you use HiPHI in your research, please cite:
 
 ```bibtex
 @article{ji2026hiphi,
-  title         = {{HiPHI}: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction},
-  author        = {Ji, Jiahao and Ma, Ji and Zhang, Runhan and Yu, Runyi and Wang, Wenjia and Chi, Weiheng and Peng, Qianqian and Yan, Weichao and Gu, Yongfei and Tian, Ye and Wu, Ting and Li, Longwei and Yuan, Chun and Dai, Ruoli and Han, Lei},
-  journal       = {arXiv preprint arXiv:2608.16222},
-  year          = {2026},
-  eprint        = {2608.16222},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.RO},
-  url           = {https://arxiv.org/abs/2608.16222}
+  title={HiPHI: A Large-Scale Benchmark for High-Precision Human Motion and Object-Interaction},
+  author={Ji, Jiahao and Ma, Ji and Zhang, Runhan and Yu, Runyi and Wang, Wenjia and Chi, Weiheng and Peng, Qianqian and Yan, Weichao and Gu, Yongfei and Tian, Ye and Wu, Ting and Li, Longwei and Yuan, Chun and Dai, Ruoli and Han, Lei},
+  journal={arXiv preprint arXiv:2608.16222},
+  year={2026}
 }
 ```
