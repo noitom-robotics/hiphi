@@ -2,7 +2,7 @@
 
 ## Source of truth
 - Status: Active
-- Last refreshed: 2026-08-17
+- Last refreshed: 2026-08-20
 - Primary product surfaces: HiPHI project page (`index.html`, `full.html`, `simple.html`) and the separately scoped offline Motion Viewer (`viewer/`).
 - Evidence reviewed: the submitted HiPHI paper source in `_ArXiv__HiPHI_Benchmark (2).zip`, the paper-matched `run86_unfiltered_hiphi_scaling_curves_20260811` figure and CSV bundle, `index.html`, `simple.html`, `static/css/hiphi.css`, `static/css/simple.css`, `static/js/main.js`, and the assets under `static/`.
 
@@ -55,9 +55,9 @@
 - Reduced motion and sensory considerations: Interactions remain usable without hover or animation.
 
 ## Responsive behavior
-- Supported breakpoints/devices: Modern desktop and mobile browsers; existing breakpoints at 1180/1100px and below remain authoritative.
-- Layout adaptations: Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. The scaling chart preserves four legible panels through horizontal scrolling on compact screens. The final BibTeX card uses horizontal scrolling rather than altering citation text.
-- Touch/hover differences: Pill links keep a minimum touch height; hover effects are decorative only.
+- Supported breakpoints/devices: Modern desktop and mobile browsers, explicitly including 320, 375, 390, and 430 CSS-pixel iPhone viewports. Mobile pages respect iOS notch, Dynamic Island, and Home Indicator safe-area insets through `viewport-fit=cover` and `env(safe-area-inset-*)`.
+- Layout adaptations: At 760px and below the full project page uses a true single-column flow with fixed desktop minimums removed; at 640px and below the simplified page follows the same gutter contract. Resource buttons remain ordered Dataset, arXiv, GitHub, Online Viewer, ModalityNet and wrap into a centered 2–2–1 mobile layout. Dense scaling and BibTeX content remains horizontally scrollable inside its own bounded card, while interactive embeds use viewport-relative mobile heights.
+- Touch/hover differences: Primary controls and navigation targets keep a minimum 44px touch height, native selects remain at 16px to prevent iOS focus zoom, horizontal data regions use momentum scrolling, and hover effects remain decorative only.
 
 ## Interaction states
 - Loading: Static resource links render immediately; data-driven sections retain their existing loading behavior.
@@ -76,5 +76,5 @@
 - Framework/styling system: Plain HTML, CSS, and JavaScript; no build step.
 - Design-token constraints: Extend the existing CSS variables and components; do not add a new design-system layer.
 - Performance constraints: No new runtime dependency, font request, or icon package for project links.
-- Compatibility constraints: Preserve the static hosting model and relative local asset paths.
-- Test/screenshot expectations: Run `python3 scripts/check_site_assets.py`, enforce the 132-performer source of truth, verify the four paper scaling benchmarks against the experiment CSVs, and inspect both desktop and mobile rendering of the full four-panel chart.
+- Compatibility constraints: Preserve the static hosting model and relative local asset paths. Keep iPhone safe-area behavior and avoid relying on horizontal clipping to conceal broken responsive layouts.
+- Test/screenshot expectations: Run `python3 scripts/check_site_assets.py`, enforce the 132-performer source of truth, verify the four paper scaling benchmarks against the experiment CSVs, and inspect desktop plus 320/375/390/430px mobile rendering. Mobile validation must check both actual element bounds and screenshots, including the full four-panel chart's contained horizontal scroll.

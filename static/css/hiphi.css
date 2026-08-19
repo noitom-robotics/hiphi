@@ -1556,3 +1556,170 @@ th, td { padding: .62rem .55rem; }
   outline: 3px solid rgba(176,68,244,.45);
   outline-offset: 3px;
 }
+
+/* V2.1 mobile layout: real single-column flow, iPhone safe areas, and touch targets. */
+@media (max-width: 760px) {
+  :root {
+    --mobile-gutter: 1rem;
+    --nav-height: 60px;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--nav-height) + env(safe-area-inset-top) + 12px);
+  }
+  body {
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
+  .site-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  .site-section {
+    scroll-margin-top: calc(var(--nav-height) + env(safe-area-inset-top) + 12px);
+  }
+  .content-grid,
+  .wide-grid,
+  .hero-shell,
+  .nav-shell {
+    width: auto;
+    max-width: none;
+    margin-left: max(var(--mobile-gutter), env(safe-area-inset-left));
+    margin-right: max(var(--mobile-gutter), env(safe-area-inset-right));
+  }
+  main,
+  .site-section,
+  .hero-main,
+  .hero-copy,
+  .overview-copy,
+  .overview-cards,
+  .section-heading,
+  .interaction-layout,
+  .object-card,
+  .benchmark-redesign,
+  .release-grid,
+  .citation-card {
+    min-width: 0;
+  }
+
+  .nav-shell {
+    min-height: var(--nav-height);
+    padding-block: .45rem;
+  }
+  .nav-toggle {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    touch-action: manipulation;
+  }
+  .nav-links {
+    top: calc(100% - 2px);
+    left: max(var(--mobile-gutter), env(safe-area-inset-left));
+    right: max(var(--mobile-gutter), env(safe-area-inset-right));
+    justify-content: stretch;
+    align-items: stretch;
+    gap: .25rem;
+    max-height: calc(100dvh - var(--nav-height) - env(safe-area-inset-top) - 12px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(24px);
+    padding-bottom: max(.8rem, env(safe-area-inset-bottom));
+  }
+  .nav-links a {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-inline: 1rem;
+  }
+
+  .section-pad { padding-block: clamp(3.4rem, 8svh, 4.6rem); }
+  .hero-title-cover {
+    min-height: auto;
+    padding: clamp(3.2rem, 8svh, 4.8rem) 0 clamp(3rem, 7svh, 4.2rem);
+  }
+  .hero-title-cover .hero-shell,
+  .hero-main-titleonly,
+  .hero-main-titleonly .hero-copy,
+  .hero-title-cover h2,
+  .paper-byline,
+  .project-links {
+    width: 100%;
+    max-width: 100%;
+  }
+  .hero-title-cover h1 {
+    font-size: clamp(4.5rem, 24vw, 6.2rem);
+  }
+  .project-links .btn,
+  .btn {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .overview-grid.site-section,
+  .atlas-heading,
+  .frame-section .browser-grid,
+  .object-section .interaction-layout,
+  .benchmark-redesign,
+  .benchmark-table-columns,
+  .release-grid,
+  .release-grid-wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-grid.site-section { gap: 1.5rem; }
+  .overview-video { width: 100%; }
+  .atlas-heading { gap: 1rem; }
+  .atlas-metrics { justify-content: flex-start; }
+  .atlas-frame-wrap,
+  .pipeline-figure { margin-inline: 0; }
+  .atlas-frame-wrap iframe {
+    height: min(68svh, 540px);
+    min-height: 460px;
+  }
+
+  .frame-section .family-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .frame-section .family-list button,
+  .lu-chip-wrap button,
+  .tabs button,
+  .player-tabs button,
+  .viewer-tabs button,
+  .playbar .btn,
+  .playbar select,
+  .speed-control select,
+  .frame-lu-playbar select {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  .viewer-tabs button { min-width: 44px; }
+  .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .object-player-layout,
+  .object-kv { grid-template-columns: minmax(0, 1fr); }
+  .object-skeleton-stage,
+  .skeleton-player-stage { min-height: 300px; }
+  .playbar input[type="range"] { min-height: 44px; }
+  select { font-size: 16px; }
+
+  .g1-mesh-frame {
+    height: min(70svh, 560px);
+    min-height: 420px;
+  }
+  .scaling-chart-scroll,
+  .table-wrap,
+  .citation-card pre {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+  .scaling-chart-scroll { touch-action: pan-x; }
+  .citation-card { padding: .75rem; }
+  .citation-card pre { max-width: 100%; }
+  .site-footer {
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+}
