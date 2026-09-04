@@ -104,6 +104,16 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -.065em;
 }
 .title-lines span { display: block; }
+.paper-venue {
+  width: fit-content;
+  margin: clamp(18px, 2.4vh, 28px) auto 0;
+  padding: .5rem .9rem;
+  border: 1px solid rgba(176,68,244,.22);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(176,68,244,.13), rgba(240,107,168,.12));
+  color: #822eb5;
+  font-weight: 900;
+}
 .title-tagline {
   margin: clamp(24px, 3.4vh, 42px) auto 0;
   max-width: 1040px;

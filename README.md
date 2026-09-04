@@ -4,6 +4,8 @@
 
 **A large-scale benchmark for high-precision human motion and object interaction.**
 
+**Accepted to CoRL 2026.**
+
 - **Hugging Face:** [noitomrobotics/HiPHI](https://huggingface.co/datasets/noitomrobotics/HiPHI)
 - **Paper:** [arXiv:2608.16222](https://arxiv.org/abs/2608.16222)
 

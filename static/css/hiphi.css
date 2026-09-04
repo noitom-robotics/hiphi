@@ -581,6 +581,15 @@ th, td { padding: .62rem .55rem; }
   margin-bottom: clamp(16px, 2vh, 26px);
 }
 .hero-title-cover .title-lines span { display: block; white-space: nowrap; }
+.paper-venue {
+  margin: 0;
+  padding: .5rem .9rem;
+  border: 1px solid rgba(176,68,244,.22);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(176,68,244,.13), rgba(240,107,168,.12));
+  color: #822eb5;
+  font-weight: 900;
+}
 .hero-title-cover .hero-lede {
   max-width: 1140px;
   font-size: clamp(1.35rem, 1.65vw, 2.05rem);
